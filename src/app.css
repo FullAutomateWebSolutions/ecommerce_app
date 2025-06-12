@@ -1,0 +1,46 @@
+/* Estilo do Menu Lateral */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;  /* Inicialmente fora da tela */
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  transition: left 0.3s ease;
+  padding-top: 20px;
+  z-index: 1000;
+}
+
+.sidebar.open {
+  left: 0; /* Quando o menu for aberto, ele ficará visível */
+}
+
+.sidebar-content ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar-content ul li {
+  padding: 15px 20px;
+  border-bottom: 1px solid #444;
+}
+
+.sidebar-content ul li:hover {
+  background-color: #555;
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-toggle:hover {
+  background-color: #444;
+}

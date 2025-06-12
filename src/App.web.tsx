@@ -4,7 +4,7 @@ import HeaderChildren from "./components/Header.mobile";
 import FooterMobile from "./components/footer.mobile";
 import HomePageWeb from "./pages/HomePage.web";
 const { Content, Header, Footer } = Layout;
-const App = () => {
+const AppWeb = () => {
   // const {
   //   token: { colorBgContainer },
   // } = theme.useToken();
@@ -39,4 +39,4 @@ const App = () => {
   // </ConfigProvider>
 };
 
-export default App;
+export default AppWeb;
