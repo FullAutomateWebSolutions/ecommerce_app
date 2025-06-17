@@ -31,6 +31,9 @@ const HeaderChildren = () => {
               <Menu.Item key="servicos"><a href="#servicos">Serviços</a></Menu.Item>
               {/* <Menu.Item key="portfolio"><a href="#portfolio">Portfólio</a></Menu.Item> */}
               <Menu.Item key="contato"><a href="#contato">Contato</a></Menu.Item>
+              <Menu.Item key="Sair"><a href="#Sair">Sair</a></Menu.Item>
+
+
             </Menu>
             
           </Drawer>
@@ -40,6 +43,7 @@ const HeaderChildren = () => {
           <Menu.Item key="servicos"><a href="#servicos">Serviços</a></Menu.Item>
           {/* <Menu.Item key="portfolio"><a href="#portfolio">Portfólio</a></Menu.Item> */}
           <Menu.Item key="contato"><a href="#contato">Contato</a></Menu.Item>
+          <Menu.Item key="Sair"><a href="#Sair">Sair</a></Menu.Item>
         </Menu>
       )}
     </>

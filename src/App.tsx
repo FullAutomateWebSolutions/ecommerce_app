@@ -1,13 +1,14 @@
-import { Layout } from "antd";
+import { Layout, Menu } from "antd";
 import OnePage from "./pages/OnePage";
 import HeaderChildren from "./components/Header.mobile";
 import FooterMobile from "./components/footer.mobile";
 import HomePageWeb from "./pages/HomePage.web";
+import Sider from "antd/es/layout/Sider";
 const { Content, Header, Footer } = Layout;
 const App = () => {
-  // const {
-  //   token: { colorBgContainer },
-  // } = theme.useToken();
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
   return (
     <>
       <Layout style={{ minHeight: "100vh" }}>
@@ -27,11 +28,25 @@ const App = () => {
         >
           <HeaderChildren />
         </Header>
-
-        <Content style={{ padding: "40px 20px", background: 'linear-gradient(to right, rgba(42, 157, 143, 0.08), rgba(11, 65, 92, 0.08))'}}>
+            {/* Menu Lateral */}
+                    <Sider width={200} style={{ background: colorBgContainer }}>
+                    <Menu
+                      mode="inline"
+                      defaultSelectedKeys={['1']}
+                      defaultOpenKeys={['sub1']}
+                      style={{ height: '100%', borderRight: 0 }}
+                      items={items2}
+                    />
+                  </Sider>
+        <Content
+          style={{
+            padding: "40px 20px",
+            background:
+              "linear-gradient(to right, rgba(42, 157, 143, 0.08), rgba(11, 65, 92, 0.08))",
+          }}
+        >
           {/* <OnePage /> */}
-      <HomePageWeb/>
-
+          
         </Content>
       </Layout>
     </>

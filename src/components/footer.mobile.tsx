@@ -14,10 +14,28 @@ import {
 } from "@ant-design/icons";
 import { Badge, Tooltip } from "antd";
 import { MenuItem } from "../types/type";
+import { IconApp } from "./ui/iconApp";
+import { useNavigate } from "react-router-dom";
 
+export const itemsDoMenu: MenuItem[] = [
+  { key: "Sair", icon: <IconApp iconKey="Sair"/>, label: "Sair", BadgeNumber: 10 },
+  { key: "Scan", icon: <IconApp iconKey="Scan" />, label: "Scan", BadgeNumber: 0 },
+  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro" },
+  { key: "Loja", icon: <IconApp iconKey="Loja" />, label: "Loja", BadgeNumber: 15 },
+  { key: "Servicos", icon: <IconApp iconKey="Servicos" />, label: "Serviços" },
+  { key: "Empacotar", icon: <IconApp iconKey="Empacotar" />, label: "Empacotar" },
+  { key: "Pedidos", icon: <IconApp iconKey="Pedidos" />, label: "Pedidos" },
+  { key: "Separação", icon: <IconApp iconKey="Separação" />, label: "Separação" },
+  { key: "Enviados", icon: <IconApp iconKey="Enviados" />, label: "Enviados" },
+  { key: "perfil", icon: <IconApp iconKey="Perfil" />, label: "Perfil" },
+  { key: "Agenda", icon: <IconApp iconKey="Agenda" />, label: "Agenda" },
+];
 
 const FooterMobile = () => {
-
+  const navigate = useNavigate();
+  const handleSelect = (key: string) => {
+    navigate(key);
+  };
  
   const iconContainer: React.CSSProperties = {
     height: 70,
@@ -30,7 +48,7 @@ const FooterMobile = () => {
     color: "white",
     textAlign: "center",
     margin: "0 auto",
-    border: "solid 1px red",
+    // border: "solid 1px red",
     flexShrink: 0, /// 0-> nao permite  /1-> Permite que o item encolha para caber no container
   };
 
@@ -47,19 +65,7 @@ const FooterMobile = () => {
     lineHeight: 1.2, ///alcular o espaço entre linhas de texto
   };
 
-  const itemsDoMenu:MenuItem[] = [
-    { key: "Sair", icon: <PoweroffOutlined  style={iconStyle} />, label: "Sair",BadgeNumber: 0 },
-    { key: "Scan", icon: <ScanOutlined  style={iconStyle} />, label: "Scan",BadgeNumber: 0 },
-    { key: "Cadastro", icon: <InboxOutlined   style={iconStyle} />, label: "Cadastro" },
-    { key: "Loja", icon: <ShopOutlined  style={iconStyle} />, label: "Loja", BadgeNumber : 15 },
-    { key: "servicos", icon: <SettingOutlined style={iconStyle} />, label: "Serviços" },
-    { key: "Empacotar", icon: <ShoppingOutlined style={iconStyle} />, label: "Empacotar" },
-    { key: "Pedidos", icon: <PushpinOutlined style={iconStyle} />, label: "Pedidos" },
-    { key: "Separação", icon: <ShoppingCartOutlined style={iconStyle} />, label: "Separação" },
-    { key: "Enviados", icon: <TruckOutlined style={iconStyle} />, label: "Enviados" },
-    { key: "perfil", icon: <UserOutlined style={iconStyle} />, label: "Perfil" },
-    { key: "Agenda", icon: <CalendarOutlined style={iconStyle} />, label: "Agenda" },
-  ];
+
 
   const footer: React.CSSProperties = {
     position: "fixed",
@@ -85,14 +91,14 @@ const FooterMobile = () => {
     <div style={footer}>
       <div style={scrollContainer}>
         {itemsDoMenu.map(({ key, icon, label, BadgeNumber }) => (
-          <a key={key} href={`#${key}`}>
+          // <a key={key} href={`#${key}`}>
             <Tooltip title={label}>
               <div style={iconContainer}>
-                <Badge count={BadgeNumber}>{icon}</Badge>
+                <Badge count={BadgeNumber} key={key} onClick={() => handleSelect(key)}>{icon}</Badge>
                 <p style={textStyle}>{label}</p>
               </div>
             </Tooltip>
-          </a>
+          // </a>
         ))}
       </div>
     </div>
