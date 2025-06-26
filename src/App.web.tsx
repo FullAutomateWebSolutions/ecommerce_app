@@ -5,8 +5,6 @@ import FooterMobile, { itemsDoMenu } from "./components/footer.mobile";
 import HomePageWeb from "./pages/HomePage.web";
 import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
-
-import type { MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const { Content, Header, Footer, Sider } = Layout;
@@ -21,78 +19,112 @@ const AppWeb = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   const handleSelect = (key: string) => {
     navigate(key);
   };
 
-  const gridStyle: React.CSSProperties = {
-    width: "25%",
-    textAlign: "center",
-  };
+  const cardsData = [
+    {
+      title: "Europe Street beat",
+      description: "www.instagram.com",
+      img: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
+    },
+    {
+      title: "Ocean View",
+      description: "www.example.com",
+      img: "https://wallpaperaccess.com/full/286247.jpg",
+    },
+    {
+      title: "Mountain High",
+      description: "www.example.org",
+      img: "https://wallpaperaccess.com/full/286247.jpg",
+    },
+  ];
+
   return (
-    <>
-      <Layout style={{ minHeight: "100vh" }}>
-        <Header
+    <Layout style={{ minHeight: "100vh" }}>
+      <Header
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          background: "#fff",
+          boxShadow: "0 2px 8px #f0f1f2",
+          padding: "0 20px",
+        }}
+      >
+        <HeaderChildren />
+      </Header>
+
+      <Layout>
+        {!isMobile && (
+          <Sider width={200} style={{ background: colorBgContainer }}>
+            <Menu
+              mode="inline"
+              defaultSelectedKeys={["1"]}
+              defaultOpenKeys={["sub1"]}
+              style={{
+                height: "100%",
+                borderRight: 0,
+                margin: 0,
+                padding: 8,
+              }}
+              items={itemsDoMenu}
+              onClick={(e) => handleSelect(e.key)}
+            />
+          </Sider>
+        )}
+
+        <Layout
           style={{
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            background: "#fff",
-            boxShadow: "0 2px 8px #f0f1f2",
-            padding: "0 20px",
+            background:
+              "linear-gradient(to right, rgba(42, 157, 143, 0.08), rgba(11, 65, 92, 0.08))",
           }}
         >
-          <HeaderChildren />
-        </Header>
-
-        <Layout>
-          {!isMobile ? (
-            <Sider width={200} style={{ background: colorBgContainer }}>
-              <Menu
-                mode="inline"
-                defaultSelectedKeys={["1"]}
-                defaultOpenKeys={["sub1"]}
-                style={{
-                  height: "100%",
-                  borderRight: 0,
-                  margin: 0,
-                  padding: 8,
-                }}
-                items={itemsDoMenu}
-                onClick={(e) => handleSelect(e.key)}
-              />
-            </Sider>
-          ) : null}
-
-          <Layout
+          <Content
             style={{
-              display: "block",
-              // padding: "0 24px 24px",
-              background:
-                "linear-gradient(to right, rgba(42, 157, 143, 0.08), rgba(11, 65, 92, 0.08))",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              overflowY: "auto",
+              height: "100%",
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+              padding: "40px 20px",
             }}
           >
-            <Content
+            {/* Grid ou Lista de Cards */}
+            <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                overflowY: "auto",
-                height: "100%",
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
-                padding: "40px 20px",
+                flexWrap: isMobile ? "nowrap" : "wrap",
+                flexDirection: isMobile ? "column" : "row",
+                gap: 16,
+                width: "100%",
+                justifyContent: isMobile ? "flex-start" : "center",
+                padding: 16,
               }}
             >
-              {/* Linha horizontal com scroll no mobile e centralizada no desktop */}
+              {cardsData.map((card, index) => (
+                <Card
+                  key={index}
+                  hoverable
+                  title={card.title}
+                  style={{
+                    width: isMobile ? "100%" : 250,
+                    flexShrink: 0,
+                  }}
+                  cover={<img alt={card.title} src={card.img} />}
+                >
+                  <Meta title={card.title} description={card.description} />
+                </Card>
+              ))}
+            </div>
+             {/* Linha horizontal com scroll no mobile e centralizada no desktop */}
               <div
                 style={{
                   overflowX: "auto",
@@ -128,63 +160,12 @@ const AppWeb = () => {
                   </Col>
                 </Row>
               </div>
-              <Card title="Card Title">
-                <Card.Grid style={gridStyle}>Content</Card.Grid>
-              </Card>
-
-              {/* Outros cards fixos */}
-              <Card
-                hoverable
-                style={!isMobile ? { width: 250 } : { width: "100%" }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                  />
-                }
-              >
-                <Meta
-                  title="Europe Street beat"
-                  description="www.instagram.com"
-                />
-              </Card>
-              <Card
-                hoverable
-                style={!isMobile ? { width: 250 } : { width: "100%" }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://wallpaperaccess.com/full/286247.jpg"
-                  />
-                }
-              >
-                <Meta
-                  title="Europe Street beat"
-                  description="www.instagram.com"
-                />
-              </Card>
-              <Card
-                hoverable
-                style={!isMobile ? { width: 250 } : { width: "100%" }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://wallpaperaccess.com/full/286247.jpg"
-                  />
-                }
-              >
-                <Meta
-                  title="Europe Street beat"
-                  description="www.instagram.com"
-                />
-              </Card>
-            </Content>
-          </Layout>
+          </Content>
         </Layout>
-
-        {isMobile ? <FooterMobile /> : null}
       </Layout>
-    </>
+
+      {isMobile && <FooterMobile />}
+    </Layout>
   );
 };
 

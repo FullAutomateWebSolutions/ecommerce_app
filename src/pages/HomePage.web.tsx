@@ -1,37 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Avatar,
-  Button,
   Layout,
-  Row,
-  Col,
-  Typography,
   theme,
-  Badge,
-  Card,
 } from "antd";
-import {
-  UserOutlined,
-  LogoutOutlined,
-  LeftOutlined,
-  RightOutlined,
-  SettingOutlined,
-  QuestionCircleOutlined,
-  ShoppingOutlined,
-  RestOutlined,
-  TruckOutlined,
-  TeamOutlined,
-  ShoppingCartOutlined,
-  PushpinOutlined,
-} from "@ant-design/icons";
 import { useMediaQuery } from "react-responsive";
 
-import Meta from "antd/es/card/Meta";
-import FooterMobile from "../components/footer.mobile";
-
-const { Content, Header } = Layout;
-const { Title } = Typography;
-
+import FooterMobile from "../components/footer.mobile"
+import LeitorPage from "./LeitorPage";
+import { Outlet } from "react-router-dom";
+const { Content } = Layout;
 const HomePageWeb: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -40,53 +17,23 @@ const HomePageWeb: React.FC = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   return (
-    <Layout style={{ minHeight: "100vh", backgroundColor: colorBgContainer }}>
-      {/* <Header
+    <div
+      style={{
+        maxWidth: "430px", // largura típica de celular
+        margin: "0 auto", // centraliza na tela
+        boxShadow: "0 0 10px rgba(0,0,0,0.2)", // opcional: dá um visual de "celular"
+        height: "100vh", // ocupa toda a altura
+        overflow: "hidden", // previne scroll externo
+      }}
+    >
+      <Layout
         style={{
-          padding: 0,
-          background: '#333', 
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          position: 'relative',
-          zIndex: 1000,
-          height: '64px', 
+          minHeight: "100vh",
+          backgroundColor: colorBgContainer
         }}
       >
-        <Row justify="space-between" align="middle" style={{ width: '100%' }}>
-          <Col>
-            {!isMobile && (
-              <Button
-                type="text"
-                icon={isMenuOpen ? <LeftOutlined /> : <RightOutlined />}
-                onClick={toggleMenu}
-                style={{ color: '#fff', padding: 50 }}
-              />
-            )}
-          </Col>
-          <Col flex="1" style={{ textAlign: 'center' }}>
-            <Title level={3} style={{ margin: 0, color: '#fff' }}>
-              Bem-vindo
-            </Title>
-          </Col>
-          <Col>
-           
-          </Col>
-        </Row>
-   
-      </Header> */}
-
-      <Layout style={{ flex: 6 }}>
-        {/* Menu Lateral */}
-
-
-
-        {/* Conteúdo Principal */}
         <Content
           style={{
             top: 0,
@@ -98,21 +45,17 @@ const HomePageWeb: React.FC = () => {
             padding: "16px",
             // backgroundImage: 'url("https://wallpaperaccess.com/full/286247.jpg")',
             backgroundImage:
-              'url("https://i.pinimg.com/originals/c2/e2/71/c2e271e7c2c54ae4157c092f89185114.jpg")',
-
+            'url("https://i.pinimg.com/originals/c2/e2/71/c2e271e7c2c54ae4157c092f89185114.jpg")',
             backgroundSize: "cover",
             transition: "margin-left 0.3s ease",
             marginLeft: !isMobile && isMenuOpen ? "250px" : "0",
           }}
         >
-          <div style={{ maxHeight: "100%", overflowY: "auto", height: "100%" }}>
-            {/* <AdminATFAG /> */}
-          </div>
+        <Outlet />
         </Content>
-
         {isMobile ? <FooterMobile /> : null}
       </Layout>
-    </Layout>
+    </div>
   );
 };
 
