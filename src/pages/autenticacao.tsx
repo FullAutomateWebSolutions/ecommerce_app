@@ -1,10 +1,13 @@
-
-import { useState } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { Form, Input, Button, Typography, message, Card } from 'antd';
-import axios  from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { Form, Input, Button, Typography, message, Card } from "antd";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQAYEvKU_85Xrj_1HFiazdc4G5x7Pa8vs",
@@ -13,66 +16,97 @@ const firebaseConfig = {
   storageBucket: "fullautomatewebsolution.firebasestorage.app",
   messagingSenderId: "544476675765",
   appId: "1:544476675765:web:402af9e09b228b563d88fc",
-  measurementId: "G-PJ0HKP092Y"
+  measurementId: "G-PJ0HKP092Y",
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const AuthPage = () => {
-  const navegate =useNavigate();
-  const [modo, setModo] = useState<'login' | 'cadastro'>('login');
+  const navegate = useNavigate();
+  const [modo, setModo] = useState<"login" | "cadastro">("login");
 
-  const onFinish = async ({ email, senha }: { email: string; senha: string }) => {
+  const onFinish = async ({
+    email,
+    senha,
+  }: {
+    email: string;
+    senha: string;
+  }) => {
     try {
       const userCredential =
-        modo === 'login'
+        modo === "login"
           ? await signInWithEmailAndPassword(auth, email, senha)
           : await createUserWithEmailAndPassword(auth, email, senha);
 
       const token = await userCredential.user.getIdToken();
-      console.log(token)
-//https://atf-m1.vercel.app/
-//http://localhost:3000/api/auth/firebase
+      console.log(token);
+      //https://atf-m1.vercel.app/
+      //http://localhost:3000/api/auth/firebase
+      const url = "https://atf-m1.vercel.app/api/auth/firebase";
+      /// Lembrar de testar e ajustar
+      axios({
+        method: "post",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // Não inclua 'Content-Type'
+        },
+      })
+        .then((res) => {
+          console.log("Resposta:", res.data);
+        })
+        .catch((err) => {
+          console.error("Erro:", err.response?.data || err.message);
+        });
 
-/// Lembrar de testar e ajustar
-      const response = await axios.post(
-        'https://atf-m1.vercel.app/api/auth/firebase',
-        {},
-        { headers: { Authorization: `${token}` } }
-      );
-      console.log(response)
-
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
       message.success(`Bem-vindo, ${email}`);
-      navegate('/');
-      
+      navegate("/");
     } catch (err: any) {
       console.error(err);
-      message.error('Erro ao autenticar');
+      message.error("Erro ao autenticar");
     }
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
-      <Card title={modo === 'login' ? 'Login' : 'Cadastro'} style={{ width: 360 }}>
+    <div
+      style={{
+        display: "flex",
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Card
+        title={modo === "login" ? "Login" : "Cadastro"}
+        style={{ width: 360 }}
+      >
         <Form layout="vertical" onFinish={onFinish}>
-          <Form.Item label="E-mail" name="email" rules={[{ required: true, type: 'email' }]}>
+          <Form.Item
+            label="E-mail"
+            name="email"
+            rules={[{ required: true, type: "email" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="Senha" name="senha" rules={[{ required: true, min: 6 }]}>
+          <Form.Item
+            label="Senha"
+            name="senha"
+            rules={[{ required: true, min: 6 }]}
+          >
             <Input.Password />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" block>
-              {modo === 'login' ? 'Entrar' : 'Cadastrar'}
+              {modo === "login" ? "Entrar" : "Cadastrar"}
             </Button>
           </Form.Item>
         </Form>
-        <Typography.Paragraph style={{ textAlign: 'center' }}>
-          {modo === 'login' ? 'Não tem conta?' : 'Já tem conta?'}{' '}
-          <a onClick={() => setModo(modo === 'login' ? 'cadastro' : 'login')}>
-            {modo === 'login' ? 'Cadastre-se' : 'Faça login'}
+        <Typography.Paragraph style={{ textAlign: "center" }}>
+          {modo === "login" ? "Não tem conta?" : "Já tem conta?"}{" "}
+          <a onClick={() => setModo(modo === "login" ? "cadastro" : "login")}>
+            {modo === "login" ? "Cadastre-se" : "Faça login"}
           </a>
         </Typography.Paragraph>
       </Card>
@@ -81,7 +115,6 @@ const AuthPage = () => {
 };
 
 export default AuthPage;
-
 
 //  1. Via painel do Firebase (console web)
 // Acesse https://console.firebase.google.com
@@ -93,7 +126,6 @@ export default AuthPage;
 // Clique em Adicionar usuário.
 
 // Preencha email e senha — pronto! ✅
-
 
 // ✅ Soluções possíveis:
 // 1. Verifique se o Firebase Auth está habilitado no Console
