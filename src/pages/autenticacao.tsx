@@ -4,6 +4,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, Input, Button, Typography, message, Card } from 'antd';
 import axios  from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQAYEvKU_85Xrj_1HFiazdc4G5x7Pa8vs",
@@ -19,6 +20,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const AuthPage = () => {
+  const navegate =useNavigate();
   const [modo, setModo] = useState<'login' | 'cadastro'>('login');
 
   const onFinish = async ({ email, senha }: { email: string; senha: string }) => {
@@ -29,16 +31,20 @@ const AuthPage = () => {
           : await createUserWithEmailAndPassword(auth, email, senha);
 
       const token = await userCredential.user.getIdToken();
+//https://atf-m1.vercel.app/
+//http://localhost:3000/api/auth/firebase
 
-      const response = await axios.post(
-        'https://atf-m1.vercel.app/api/auth/firebase',
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+/// Lembrar de testar e ajustar
+      // const response = await axios.post(
+      //   'https://atf-m1.vercel.app/api/auth/firebase',
+      //   {},
+      //   { headers: { Authorization: `Bearer ${token}` } }
+      // );
 
       localStorage.setItem('token', token);
       message.success(`Bem-vindo, ${email}`);
-      window.location.href = '/'; // redireciona para home
+      navegate('/');
+      
     } catch (err: any) {
       console.error(err);
       message.error('Erro ao autenticar');
