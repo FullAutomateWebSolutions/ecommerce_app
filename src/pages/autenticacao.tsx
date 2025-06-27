@@ -31,15 +31,17 @@ const AuthPage = () => {
           : await createUserWithEmailAndPassword(auth, email, senha);
 
       const token = await userCredential.user.getIdToken();
+      console.log(token)
 //https://atf-m1.vercel.app/
 //http://localhost:3000/api/auth/firebase
 
 /// Lembrar de testar e ajustar
-      // const response = await axios.post(
-      //   'https://atf-m1.vercel.app/api/auth/firebase',
-      //   {},
-      //   { headers: { Authorization: `Bearer ${token}` } }
-      // );
+      const response = await axios.post(
+        'https://atf-m1.vercel.app/api/auth/firebase',
+        {},
+        { headers: { Authorization: `${token}` } }
+      );
+      console.log(response)
 
       localStorage.setItem('token', token);
       message.success(`Bem-vindo, ${email}`);
