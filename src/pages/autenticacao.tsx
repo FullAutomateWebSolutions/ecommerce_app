@@ -31,7 +31,7 @@ const AuthPage = () => {
       const token = await userCredential.user.getIdToken();
 
       const response = await axios.post(
-        'http://localhost:3000/api/auth/firebase',
+        'https://atf-m1.vercel.app/api/auth/firebase',
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
