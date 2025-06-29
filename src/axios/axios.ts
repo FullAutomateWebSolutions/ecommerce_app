@@ -1,16 +1,14 @@
 
 import axios from "axios";
-
 // Verificar se as variáveis de ambiente estão definidas
-// const apiUrl = "https://atf-m1.vercel.app";
-const apiUrl = "http://localhost:3000/";
+   const apiUrl = import.meta.env.VITE_URL_API || import.meta.env.VITE_API_URL;
 
 if (!apiUrl) {
     throw new Error("Url nao esta padrao");
 }
 
 // Função para obter o token do localStorage
-// const getAuthToken = () => localStorage.getItem('refreshToken');
+const getAuthToken = () => localStorage.getItem('authToken');
 
 
 // Função para definir o token no localStorage
@@ -45,23 +43,23 @@ export const api = axios.create({
 });
 
 // Adicionar interceptador para incluir o token nas requisições
-// api.interceptors.request.use(
-//   config => {
-//     const token = getAuthToken();
-//     if (token) {
-//       config.headers['Authorization'] = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   error => Promise.reject(error)
-// );
+api.interceptors.request.use(
+  config => {
+    const token = getAuthToken();
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => Promise.reject(error)
+);
 
 // Adicionar interceptador para tratamento de resposta e renovação do token
 api.interceptors.response.use(
   response => response,
   async error => {
     // CASO A API RETORNE 404 ELE VAI LIMPAR O TOKEN E RETONAR PARA A LOGIN
-    if (error.response?.status === 401 && error.response?.data?.message === 'Token expired') {
+    if (error.response?.status === 401 && error.response?.data?.message === 'Token ausente') {//Token inválido
         // const originalRequest = error.config;
         // try {
         //   //Chamo ele mesmo e repasso o token

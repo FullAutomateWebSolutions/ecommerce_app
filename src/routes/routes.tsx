@@ -15,15 +15,15 @@ import LeitorPage from '../pages/LeitorPage';
 const router = createBrowserRouter([
   {
     // Rota principal
-    path: "/",    element: (<AuthProvider ><PrivateRoute><HomePageWeb/></PrivateRoute></AuthProvider>),
+    path: "/",    element: (<AuthProvider ><PrivateRoute roleUser='public'><HomePageWeb/></PrivateRoute></AuthProvider>),
     //Rotas privadas
     children: [
-     {        path :"cadastro", element: (    <AuthProvider ><PrivateRoute roleUser='Admin'><AppWeb/>  </PrivateRoute></AuthProvider>),},    
-     {        path: "sair", element: ( <AuthProvider ><PrivateRoute roleUser='Admin'><App/>     </PrivateRoute></AuthProvider>),}, 
+     {        path :"cadastro", element: (    <AuthProvider ><PrivateRoute roleUser='user'><AppWeb/>  </PrivateRoute></AuthProvider>),},    
+     {        path: "sair", element: ( <AuthProvider ><PrivateRoute roleUser='public'><App/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "scan", element: ( <AuthProvider ><PrivateRoute roleUser='Admin'><LeitorPage/>     </PrivateRoute></AuthProvider>),}, 
-     { path: '404', element:           <AuthProvider ><PrivateRoute roleUser='Admin'><ErrorPage404/></PrivateRoute></AuthProvider>  },
-     { path: '403', element:           <AuthProvider ><PrivateRoute roleUser='Admin'><ErrorPage403/></PrivateRoute></AuthProvider>  },
-     { path: '*', element:             <AuthProvider ><PrivateRoute roleUser='Admin'><ErrorPage/></PrivateRoute></AuthProvider>  }
+     { path: '404', element:           <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage404/></PrivateRoute></AuthProvider>  },
+     { path: '403', element:           <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage403/></PrivateRoute></AuthProvider>  },
+     { path: '*', element:             <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage/></PrivateRoute></AuthProvider>  }
     ],
     }, //Rota publica
     { path: 'login', element: <AuthPage />  },

@@ -5,14 +5,13 @@ import { Alert, Flex, message, Spin } from "antd";
 
 interface PrivateRouteProps {
   children: ReactNode;
-  roleUser?: string;
+  roleUser: string|null;
   telaUser?: string;
 }
 
 const PrivateRoute = ({ children, roleUser }: PrivateRouteProps) => {
-  const { user, loading, role } = useAuth();
+  const { use, loading, role } = useAuth();
 
-/// de primeira vem null ai tem que esperar loading ficar true para pegar o valor de user
   if (loading) {
     return <Flex gap="middle" vertical>
     <Spin tip="Loading...">
@@ -25,12 +24,12 @@ const PrivateRoute = ({ children, roleUser }: PrivateRouteProps) => {
   </Flex> 
   }
 
-  if (!user) {
+  if (!use && use === null) {
     message.error("Por favor, se autenticar!")
     return <Navigate to="/login" replace />;
   }
 
-  if (roleUser && role !== roleUser) {
+  if (roleUser && role !== roleUser && roleUser !== 'public') {
     return <Navigate to="/403" replace />;
   }
 

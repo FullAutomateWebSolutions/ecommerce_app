@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -8,67 +8,32 @@ import {
 import { Form, Input, Button, Typography, message, Card } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { CLogin } from "../module/login.entity";
+import { loginStore } from "@/store/useStore";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBQAYEvKU_85Xrj_1HFiazdc4G5x7Pa8vs",
-  authDomain: "fullautomatewebsolution.firebaseapp.com",
-  projectId: "fullautomatewebsolution",
-  storageBucket: "fullautomatewebsolution.firebasestorage.app",
-  messagingSenderId: "544476675765",
-  appId: "1:544476675765:web:402af9e09b228b563d88fc",
-  measurementId: "G-PJ0HKP092Y",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
 const AuthPage = () => {
   const navegate = useNavigate();
+  const {fech,loginUser,user, userSing}= loginStore();
   const [modo, setModo] = useState<"login" | "cadastro">("login");
 
-  const onFinish = async ({
-    email,
-    senha,
-  }: {
-    email: string;
-    senha: string;
-  }) => {
+  useEffect(() => {
+    fech();
+  }, [userSing, user]); /// tem que monitorar o userSing/user pois é ele que tem os dados do usuário logado
+
+  const onFinish = async ({email,senha}:{email: string, senha: string}) => {
     try {
-      const userCredential =
-        modo === "login"
-          ? await signInWithEmailAndPassword(auth, email, senha)
-          : await createUserWithEmailAndPassword(auth, email, senha);
-
-      const token = await userCredential.user.getIdToken();
-      console.log(token);
-      //https://atf-m1.vercel.app/
-      //http://localhost:3000/api/auth/firebase
-      const url = "https://atf-m1.vercel.app/api/auth/firebase";
-      /// Lembrar de testar e ajustar
-      axios({
-        method: "post",
-        url,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // Não inclua 'Content-Type'
-        },
-      })
-        .then((res) => {
-          console.log("Resposta:", res.data);
-        })
-        .catch((err) => {
-          console.error("Erro:", err.response?.data || err.message);
-        });
-
-      localStorage.setItem("token", token);
-      message.success(`Bem-vindo, ${email}`);
-      navegate("/");
-    } catch (err: any) {
-      console.error(err);
-      message.error("Erro ao autenticar");
+    if (modo === "login") {
+      await loginUser(email, senha)   
     }
-  };
-
+    // Adicione lógica para cadastro aqui, se necessário
+       navegate("/");
+  } catch (error: any) {
+       alert("Usuário ou senha incorretos. (" + error.message + " )");
+    alert("Erro ao autenticar: " + error);
+  }
+  }  
+  
   return (
     <div
       style={{
