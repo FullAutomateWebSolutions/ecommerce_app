@@ -15,7 +15,7 @@ const AppWeb = () => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const navigate = useNavigate();
-      const {role} = useAuth();
+  const { role } = useAuth();
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -44,7 +44,14 @@ const AppWeb = () => {
   ];
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout
+      style={{
+        minHeight: "100vh",
+        borderBottom: "none",
+        background:
+          "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(42, 157, 143, 0.05))",
+      }}
+    >
       <Header
         style={{
           position: "sticky",
@@ -75,18 +82,13 @@ const AppWeb = () => {
                 margin: 0,
                 padding: 8,
               }}
-              items={handleMenu(role)}
+              items={handleMenu()}
               onClick={(e) => handleSelect(e.key)}
             />
           </Sider>
         )}
 
-        <Layout
-          style={{
-            background:
-              "linear-gradient(to right, rgba(42, 157, 143, 0.08), rgba(11, 65, 92, 0.08))",
-          }}
-        >
+        <Layout>
           <Content
             style={{
               display: "flex",
@@ -94,7 +96,7 @@ const AppWeb = () => {
               alignItems: "center",
               overflowY: "auto",
               height: "100%",
-              background: colorBgContainer,
+              background: "linear-gradient(to right, rgba(42, 157, 143, 0.08), rgba(11, 65, 92, 0.08))",
               borderRadius: borderRadiusLG,
               padding: "40px 20px",
             }}
@@ -126,8 +128,8 @@ const AppWeb = () => {
                 </Card>
               ))}
             </div> */}
-             {/* Linha horizontal com scroll no mobile e centralizada no desktop */}
-              {/* <div
+            {/* Linha horizontal com scroll no mobile e centralizada no desktop */}
+            {/* <div
                 style={{
                   overflowX: "auto",
                   width: "100%",
@@ -162,11 +164,11 @@ const AppWeb = () => {
                   </Col>
                 </Row>
               </div> */}
-                      <Outlet />
+            <Outlet />
           </Content>
         </Layout>
       </Layout>
-      
+
       {isMobile && <FooterMobile />}
     </Layout>
   );

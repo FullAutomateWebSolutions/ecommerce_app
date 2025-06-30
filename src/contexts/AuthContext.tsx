@@ -4,7 +4,7 @@ import { loginStore } from '@/store/useStore';
 interface AuthContextProps {
   use: any;
   loading: boolean;
-  role: string | null;
+  role: string[] | null;
 }
 
 interface AuthProviderProps {
@@ -21,13 +21,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { userSing, fech, user } = loginStore();
   const [use, setUse] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useState<string[] | null>(null);
 
   useEffect(() => {
     if (user?.token) {
       // já tem dados persistidos, só seta
       setUse(user);
-      setRole(userSing?.customClaims?.role?.[0] ?? null);
+      setRole([...userSing?.customClaims?.role || []]);
       setLoading(false);
 
       // opcional: atualiza dados do firebase
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     if (userSing?.uid) {
       setUse(userSing);
-      setRole(userSing.customClaims?.role?.[0] ?? null);
+      setRole([...userSing?.customClaims?.role || []]);
       setLoading(false);
     }
   }, [userSing]);

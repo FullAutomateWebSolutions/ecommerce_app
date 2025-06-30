@@ -17,45 +17,82 @@ import { MenuItem } from "../types/type";
 import { IconApp } from "./ui/iconApp";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { c } from "vite/dist/node/moduleRunnerTransport.d-DJ_mE5sf";
 
 
-
-
- const rawItemsDoMenu: MenuItem[] = [
-  { key: "Sair", icon: <IconApp iconKey="Sair"/>, label: "Sair", BadgeNumber: 10 ,role: null },
-  { key: "Scan", icon: <IconApp iconKey="Scan" />, label: "Scan", BadgeNumber: 0,role: "user"  },
-  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro",role: "user"  },
-  { key: "Loja", icon: <IconApp iconKey="Loja" />, label: "Loja", BadgeNumber: 15,role: "user"  },
-  { key: "Servicos", icon: <IconApp iconKey="Servicos" />, label: "Serviços" , BadgeNumber: 5 },
-  { key: "Empacotar", icon: <IconApp iconKey="Empacotar" />, label: "Empacotar" },
+const rawItemsDoMenu: MenuItem[] = [
+  // { key: "Sair", icon: <IconApp iconKey="Sair"/>, label: "Sair", BadgeNumber: 10 ,role: null },
+  {
+    key: "Scan",
+    icon: <IconApp iconKey="Scan" />,
+    label: "Scan",
+    BadgeNumber: 0,
+    role: "user",
+  },
+  {
+    key: "Cadastro",
+    icon: <IconApp iconKey="Cadastro" />,
+    label: "Cadastro",
+    role: "user",
+  },
+  {
+    key: "Loja",
+    icon: <IconApp iconKey="Loja" />,
+    label: "Loja",
+    BadgeNumber: 15,
+    role: "user",
+  },
+  {
+    key: "Servicos",
+    icon: <IconApp iconKey="Servicos" />,
+    label: "Serviços",
+    BadgeNumber: 5,
+  },
+  {
+    key: "Empacotar",
+    icon: <IconApp iconKey="Empacotar" />,
+    label: "Empacotar",
+  },
   { key: "Pedidos", icon: <IconApp iconKey="Pedidos" />, label: "Pedidos" },
-  { key: "Separação", icon: <IconApp iconKey="Separação" />, label: "Separação" },
-  { key: "Enviados", icon: <IconApp iconKey="Enviados" />, label: "Enviados" },
+  {
+    key: "Separação",
+    icon: <IconApp iconKey="Separação" />,
+    label: "Separação",
+  },
+  {
+    key: "Enviados",
+    icon: <IconApp iconKey="Enviados" />,
+    label: "Enviados",
+  },
   { key: "perfil", icon: <IconApp iconKey="Perfil" />, label: "Perfil" },
   { key: "Agenda", icon: <IconApp iconKey="Agenda" />, label: "Agenda" },
 ];
 
-export function handleMenu(role: string | null) {
-  return rawItemsDoMenu.filter(item => {
+ const hasPermission = (requiredRole: string | null) => {
+    const { role } = useAuth();
+    if (requiredRole === null) return false;
+    return role?.includes(requiredRole);
+  };
+
+export function handleMenu() {
+  return rawItemsDoMenu.filter((item) => {
     if (item.role !== undefined) {
-      if (item.role === role) return true;
+      if (hasPermission(item.role)) return true;
       if (item.role === null) return true;
+      // if (Array.isArray(item.role) && item.role.includes(role)) return true;
       return false;
     }
     return false;
   });
-  
 }
 
-
 const FooterMobile = () => {
-    const {role} = useAuth();
   const navigate = useNavigate();
-  const itemsDoMenu = handleMenu(role);
+  const itemsDoMenu = handleMenu();
   const handleSelect = (key: string) => {
     navigate(key);
   };
- 
+
   const iconContainer: React.CSSProperties = {
     height: 70,
     width: 70,
@@ -84,8 +121,6 @@ const FooterMobile = () => {
     lineHeight: 1.2, ///alcular o espaço entre linhas de texto
   };
 
-
-
   const footer: React.CSSProperties = {
     position: "fixed",
     bottom: 0,
@@ -101,9 +136,9 @@ const FooterMobile = () => {
 
   const scrollContainer: React.CSSProperties = {
     display: "flex",
-    gap: 20,///é uma propriedade muito útil para definir o espaçamento entre elementos filhos dentro de containers flexíveis (flexbox) ou grids (grid).
-    minWidth: itemsDoMenu.length > 4 ? "max-content" : "100%",///define a largura mínima que um elemento pode ter, ou seja, o menor valor para a largura do elemento.
-    justifyContent: itemsDoMenu.length > 4 ? "flex-start" : "center",/// muda linha conforme tamanhoPadraoitem
+    gap: 20, ///é uma propriedade muito útil para definir o espaçamento entre elementos filhos dentro de containers flexíveis (flexbox) ou grids (grid).
+    minWidth: itemsDoMenu.length > 4 ? "max-content" : "100%", ///define a largura mínima que um elemento pode ter, ou seja, o menor valor para a largura do elemento.
+    justifyContent: itemsDoMenu.length > 4 ? "flex-start" : "center", /// muda linha conforme tamanhoPadraoitem
   };
 
   return (
@@ -111,12 +146,18 @@ const FooterMobile = () => {
       <div style={scrollContainer}>
         {itemsDoMenu.map(({ key, icon, label, BadgeNumber }) => (
           // <a key={key} href={`#${key}`}>
-            <Tooltip title={label}>
-              <div style={iconContainer}>
-                <Badge count={BadgeNumber} key={key} onClick={() => handleSelect(key)}>{icon}</Badge>
-                <p style={textStyle}>{label}</p>
-              </div>
-            </Tooltip>
+          <Tooltip title={label}>
+            <div style={iconContainer}>
+              <Badge
+                count={BadgeNumber}
+                key={key}
+                onClick={() => handleSelect(key)}
+              >
+                {icon}
+              </Badge>
+              <p style={textStyle}>{label}</p>
+            </div>
+          </Tooltip>
           // </a>
         ))}
       </div>

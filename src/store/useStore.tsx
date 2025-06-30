@@ -35,7 +35,7 @@ export const loginStore = create<CLoginState>()(
       logout: () => {
         set({ user: null, userSing: null });
         localStorage.removeItem('login-storage'); 
-        localStorage.removeItem('authToken'); // se usar token
+        localStorage.removeItem('authToken'); 
       },
     }),
     {
@@ -44,6 +44,7 @@ export const loginStore = create<CLoginState>()(
         user: state.user,
         userSing: state.userSing,
       }),
+      
     }
   )
 );

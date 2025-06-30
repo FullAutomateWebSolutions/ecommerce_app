@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import {
   Menu,
   Drawer,
@@ -9,15 +9,16 @@ import {
   Divider,
   List,
   Avatar,
-  Space,
-  Tooltip,
   Dropdown,
   MenuProps,
   message,
+  Space,
 } from "antd";
-import { HomeOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
+import { HomeOutlined, MenuOutlined, PoweroffOutlined, UserOutlined } from "@ant-design/icons";
 import logo from "../assets/logo.png";
 import { loginStore } from "@/store/useStore";
+import { IconApp } from "./ui/iconApp";
+import { Navigate, useNavigate } from "react-router-dom";
 // import Logout, { handleLogout } from "@/pages/Logout";
 interface DescriptionItemProps {
   title: string;
@@ -26,7 +27,8 @@ interface DescriptionItemProps {
 
 const { useBreakpoint } = Grid;
 const HeaderChildren = () => {
-  const { userSing } = loginStore();
+  const navigate =  useNavigate();
+  const { userSing,logout } = loginStore();
   const [visible, setVisible] = useState(false);
   const screens = useBreakpoint();
   const showDrawer = () => setVisible(true);
@@ -71,7 +73,7 @@ const HeaderChildren = () => {
         <Button
           title="Menu"
           type="text"
-          icon={<MenuOutlined />}
+          icon={ <IconApp iconKey="Servicos" />}
           onClick={showDrawer}
           style={{
             borderBottom: "none",
@@ -89,8 +91,8 @@ const HeaderChildren = () => {
         <Button
           title="Menu"
           type="text"
-          icon={<HomeOutlined />}
-          // onClick={()=>handleLogout()}
+          icon={ <IconApp iconKey="Sair" />}
+           onClick={()=>(logout(), navigate("/login"))}
           style={{
             borderBottom: "none",
             background:
@@ -119,14 +121,21 @@ const HeaderChildren = () => {
           onClose={onClose}
           visible={visible}
           title={`Perfil do usuário `}
-          //      extra={
-          //   <Space>
-          //     <Button onClick={onClose}>Cancel</Button>
-          //     <Button onClick={onClose} type="primary">
-          //       Submit
-          //     </Button>
-          //   </Space>
-          // }
+               extra={
+            <Space>
+               <Button
+          title="Menu"
+          type="text"
+          icon={ <IconApp iconKey="Sair" />}
+           onClick={()=>(logout(), navigate("/login"))}
+          style={{
+            borderBottom: "none",
+            background:
+              "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(42, 157, 143, 0.05))",
+          }}
+        />
+            </Space>
+          }
         >
           <p
             className="site-description-item-profile-p"

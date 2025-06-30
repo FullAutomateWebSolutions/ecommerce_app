@@ -1,85 +1,142 @@
 import { useEffect, useState } from "react";
-import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { Form, Input, Button, Typography, message, Card } from "antd";
-import axios from "axios";
+import { Form, Input, Button, Typography, Card, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
-import { CLogin } from "../module/login.entity";
 import { loginStore } from "@/store/useStore";
-
+import { UserOutlined, LockOutlined, LoginOutlined } from "@ant-design/icons";
 
 const AuthPage = () => {
-  const navegate = useNavigate();
-  const {fech,loginUser,user, userSing}= loginStore();
+  const navigate = useNavigate();
+  const { fech, loginUser, user, userSing } = loginStore();
   const [modo, setModo] = useState<"login" | "cadastro">("login");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fech();
-  }, [userSing, user]); /// tem que monitorar o userSing/user pois é ele que tem os dados do usuário logado
+  }, [userSing, user]);
 
-  const onFinish = async ({email,senha}:{email: string, senha: string}) => {
+  const onFinish = async ({ email, senha }: { email: string; senha: string }) => {
     try {
-    if (modo === "login") {
-      await loginUser(email, senha)   
+      setLoading(true);
+      if (modo === "login") {
+        await loginUser(email, senha);
+      }
+      navigate("/");
+    } catch (error: any) {
+      alert("Usuário ou senha incorretos. (" + error.message + " )");
+    } finally {
+      setLoading(false);
     }
-    // Adicione lógica para cadastro aqui, se necessário
-       navegate("/");
-  } catch (error: any) {
-       alert("Usuário ou senha incorretos. (" + error.message + " )");
-    alert("Erro ao autenticar: " + error);
-  }
-  }  
-  
+  };
+
   return (
     <div
       style={{
+        background: "linear-gradient(to bottom, #e0f7f5, #f8fffe)",
         display: "flex",
         height: "100vh",
         justifyContent: "center",
         alignItems: "center",
+        padding: 16,
       }}
     >
       <Card
-        title={modo === "login" ? "Login" : "Cadastro"}
-        style={{ width: 360 }}
+        bordered={false}
+        style={{
+          width: 380,
+          maxWidth: "100%",
+          padding: 24,
+          borderRadius: 16,
+          boxShadow: "0 8px 32px rgba(42, 157, 143, 0.2)",
+          background: "rgba(255, 255, 255, 0.55)",
+          backdropFilter: "blur(8px)",
+          transition: "all 0.4s ease-in-out",
+        }}
       >
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <img
+            src="logo2.png"
+            alt="Logo"
+            style={{ width: 85, marginBottom: 12 }}
+          />
+        
+            <Typography.Title level={5} style={{ color: "#2a9d8f", margin: 0 }}>
+             Full Automate Web Solutions
+          </Typography.Title>
+          <Typography.Text type="secondary">
+            Plataforma de acesso unificado
+          </Typography.Text>
+            <Typography.Title level={2} style={{ color: "#2a9d8f", margin: 15 }}>
+            {modo === "login" ? "Acessar Sistema" : "Criar Conta"}
+          </Typography.Title>
+        </div>
+
         <Form layout="vertical" onFinish={onFinish}>
           <Form.Item
             label="E-mail"
             name="email"
             rules={[{ required: true, type: "email" }]}
           >
-            <Input />
+            <Input prefix={<UserOutlined />} placeholder="seu@email.com" />
           </Form.Item>
           <Form.Item
             label="Senha"
             name="senha"
             rules={[{ required: true, min: 6 }]}
           >
-            <Input.Password />
+            <Input.Password prefix={<LockOutlined />} placeholder="******" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button
+              htmlType="submit"
+              block
+              icon={<LoginOutlined />}
+              loading={loading}
+              style={{
+                color: "#2a9d8f",
+                borderRadius: "8px",
+                background:
+                  "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(42, 157, 143, 0.05))",
+                border: "1px solid #2a9d8f",
+                boxShadow: "0 0 10px rgba(42, 157, 143, 0.2)",
+                transition: "all 0.3s ease-in-out",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget.style.boxShadow =
+                  "0 0 15px rgba(42, 157, 143, 0.5)");
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget.style.boxShadow =
+                  "0 0 10px rgba(42, 157, 143, 0.2)");
+              }}
+            >
               {modo === "login" ? "Entrar" : "Cadastrar"}
             </Button>
           </Form.Item>
         </Form>
+
         <Typography.Paragraph style={{ textAlign: "center" }}>
           {modo === "login" ? "Não tem conta?" : "Já tem conta?"}{" "}
-          <a onClick={() => setModo(modo === "login" ? "cadastro" : "login")}>
+          <a
+            onClick={() => setModo(modo === "login" ? "cadastro" : "login")}
+            style={{
+              color: "#2a9d8f",
+              fontWeight: 500,
+              cursor: "pointer",
+              transition: "color 0.3s",
+            }}
+          >
             {modo === "login" ? "Cadastre-se" : "Faça login"}
           </a>
         </Typography.Paragraph>
+        
       </Card>
     </div>
   );
 };
 
 export default AuthPage;
+
+
 
 //  1. Via painel do Firebase (console web)
 // Acesse https://console.firebase.google.com

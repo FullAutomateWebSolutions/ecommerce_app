@@ -14,16 +14,16 @@ const LeitorPage: React.FC = () => {
 
   return (
     <div
-      style={{
-        maxWidth: "430px",
-        margin: "0 auto",
-        padding: "16px",
-        minHeight: "100vh",
-        backgroundColor: "#f0f2f5",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}
+      // style={{
+      //   maxWidth: "430px",
+      //   margin: "0 auto",
+      //   padding: "16px",
+      //   minHeight: "100vh",
+      //   backgroundColor: "#f0f2f5",
+      //   display: "flex",
+      //   flexDirection: "column",
+      //   justifyContent: "center",
+      // }}
     >
       <Card
         bordered={false}
