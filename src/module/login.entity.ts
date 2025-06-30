@@ -1,5 +1,6 @@
 import api from "@/axios/axios";
 import { FirebaseUserResponse, IUser } from "@/types/type";
+import { message } from "antd";
 import { AxiosResponse } from "axios";
 import { get } from "http";
 
@@ -57,8 +58,35 @@ export class CLogin {
   }
   
 
-  // public createdUser() {}
-  
+  public async createdUser(username: string, password: string): Promise<AxiosResponse<any, any>> {
+    try {
+      const response = await api.post('/api/create-user', {
+        email: username,
+        senha: password
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      return response;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+public async sendResetLink(email: string): Promise<AxiosResponse<any, any>> {
+  try {
+    const response = await api.post('/api/send-reset-link', { email }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    message.success("Link de redefinição de senha enviado com sucesso.");
+    return response;
+  } catch (error) {
+    message.error("Erro ao enviar link de redefinição de senha.");
+    return Promise.reject(error);
+  }
+}
  public async loginUser() {
     const getAuthToken =  localStorage.getItem('authToken');
     if (getAuthToken) {

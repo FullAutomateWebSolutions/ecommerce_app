@@ -6,8 +6,8 @@ import { UserOutlined, LockOutlined, LoginOutlined } from "@ant-design/icons";
 
 const AuthPage = () => {
   const navigate = useNavigate();
-  const { fech, loginUser, user, userSing } = loginStore();
-  const [modo, setModo] = useState<"login" | "cadastro">("login");
+  const { fech, loginUser, user, userSing , creatUser,redfinePassword} = loginStore();
+  const [modo, setModo] = useState<"login" | "cadastro" | "redefinir">("login");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -115,7 +115,35 @@ const AuthPage = () => {
         </Form>
 
         <Typography.Paragraph style={{ textAlign: "center" }}>
-          {modo === "login" ? "Não tem conta?" : "Já tem conta?"}{" "}
+            {modo === "login" ? "Não tem conta?" : "Já tem conta?"}{" "}
+            <br />
+            {modo === "login" && (
+            <a
+              onClick={async () => {
+              const email = prompt("Digite seu e-mail para redefinir a senha:");
+              if (email) {
+                try {
+                setLoading(true);
+                await loginStore.getState().redfinePassword(email);
+                alert("Se o e-mail existir, um link de redefinição foi enviado.");
+                } catch (error: any) {
+                alert("Erro ao enviar redefinição: " + error.message);
+                } finally {
+                setLoading(false);
+                }
+              }
+              }}
+              style={{
+              color: "#2a9d8f",
+              fontWeight: 500,
+              cursor: "pointer",
+              marginRight: 8,
+              display: "inline-block",
+              }}
+            >
+              Esqueceu a senha?
+            </a>
+            )}
           <a
             onClick={() => setModo(modo === "login" ? "cadastro" : "login")}
             style={{

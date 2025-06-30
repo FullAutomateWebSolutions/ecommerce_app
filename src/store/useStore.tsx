@@ -11,6 +11,9 @@ interface CLoginState {
   fech: () => Promise<void>;
   loginUser: (username: string, password: string) => Promise<void>;
   logout: () => void;
+    creatUser: (username: string, password: string) => Promise<void>;
+    redfinePassword: (email: string) => Promise<void>;
+  
 }
 
 export const loginStore = create<CLoginState>()(
@@ -25,7 +28,15 @@ export const loginStore = create<CLoginState>()(
         if (user) set({ user });
         if (userSing) set({ userSing });
       },
-
+      creatUser: async (username, password) => {
+        await clogin.createdUser(username, password);
+        const user = clogin.getUser();
+        const userSing = clogin.getUserSing();
+        set({ user, userSing });
+      },
+      redfinePassword: async (email) => {
+        await clogin.sendResetLink(email);
+      },
       loginUser: async (username, password) => {
         await clogin.loginUserApi(username, password);
         const user = clogin.getUser();

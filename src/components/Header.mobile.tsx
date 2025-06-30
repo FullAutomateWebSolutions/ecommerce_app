@@ -13,8 +13,9 @@ import {
   MenuProps,
   message,
   Space,
+  Typography,
 } from "antd";
-import { HomeOutlined, MenuOutlined, PoweroffOutlined, UserOutlined } from "@ant-design/icons";
+import { HomeOutlined, LogoutOutlined, MenuOutlined, PoweroffOutlined, UserOutlined } from "@ant-design/icons";
 import logo from "../assets/logo.png";
 import { loginStore } from "@/store/useStore";
 import { IconApp } from "./ui/iconApp";
@@ -40,12 +41,30 @@ const HeaderChildren = () => {
 
   const isMobile = !screens.md;
 
-  const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
-    <div className="site-description-item-profile-wrapper">
-      <p className="site-description-item-profile-p-label">{title}:</p>
-      {content}
-    </div>
-  );
+   const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  function formatToBRDateTime(dateInput: Date | string): string {
+  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+
+  if (isNaN(date.getTime())) {
+    throw new Error("Data inválida");
+  }
+
+  const pad = (n: number) => n.toString().padStart(2, "0");
+
+  const day = pad(date.getDate());
+  const month = pad(date.getMonth() + 1); // meses começam do 0
+  const year = date.getFullYear();
+
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const seconds = pad(date.getSeconds());
+
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+}
 
   const items: MenuProps["items"] = [
     {
@@ -121,145 +140,74 @@ const HeaderChildren = () => {
           onClose={onClose}
           visible={visible}
           title={`Perfil do usuário `}
-               extra={
-            <Space>
-               <Button
-          title="Menu"
+        >
+           <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <List.Item.Meta
+              avatar={<Avatar size={64} src={userSing?.photoURL} />}
+              title={userSing?.email}
+              description={userSing?.emailVerified ? "Verificado" : "Não verificado"}
+            />
+          </Col>
+
+          {/* <Col span={12}>
+            <Typography.Text strong>E-mail</Typography.Text>
+            <div>{userSing?.email}</div>
+          </Col> */}
+
+          <Col span={12}>
+            <Typography.Text strong>UID</Typography.Text>
+            <div>{userSing?.uid}</div>
+          </Col>
+
+          <Col span={24}>
+            <Typography.Text strong>Status</Typography.Text>
+            <div>{userSing?.disabled ? "Desativado" : "Ativo"}</div>
+          </Col>
+
+          <Col span={12}>
+            <Typography.Text strong>E-mail Verificação</Typography.Text>
+            <div>{userSing?.emailVerified ? "Sim" : "Não"}</div>
+          </Col>
+
+          <Col span={24}>
+            <Typography.Text strong>Provedor de Login</Typography.Text>
+            <div>
+              {userSing?.providerData?.map((p) => p.providerId).join(", ") ||
+                "Desconhecido"}
+            </div>
+          </Col>
+
+          <Col span={24}>
+            <Typography.Text strong>Funções</Typography.Text>
+            <div>
+              {userSing?.customClaims?.role?.join(" / ") || "Não informado"}
+            </div>
+          </Col>
+
+          <Col span={24}>
+            <Typography.Text strong>Criado em</Typography.Text>
+            <div>{formatToBRDateTime(String(userSing?.metadata?.creationTime))}</div>
+          </Col>
+            <Col span={24}>
+            <Typography.Text strong>Atualizado em</Typography.Text>
+            <div>{formatToBRDateTime(String(userSing?.metadata?.lastRefreshTime))}</div>
+          </Col>
+        </Row>
+
+        <Divider />
+        <Button
+          title="Sair"
           type="text"
           icon={ <IconApp iconKey="Sair" />}
-           onClick={()=>(logout(), navigate("/login"))}
+           onClick={handleLogout}
           style={{
             borderBottom: "none",
             background:
               "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(42, 157, 143, 0.05))",
           }}
+          block
         />
-            </Space>
-          }
-        >
-          <p
-            className="site-description-item-profile-p"
-            style={{ marginBottom: 24 }}
-          >
-            {userSing?.email || "User Profile"}
-          </p>
-          <p className="site-description-item-profile-p">Personal</p>
-          <Row>
-            <Col span={12}>
-              <DescriptionItem title="E-mail" content={userSing?.email} />
-            </Col>
-            <Col span={12}>
-              <DescriptionItem
-                title="Conta Verificada"
-                content={userSing?.emailVerified || "Não verificada"}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <DescriptionItem
-                title="Status usuário"
-                content={userSing?.disabled || "Não informado"}
-              />
-            </Col>
-            <Col span={12}>
-              <DescriptionItem
-                title="ID Usuário"
-                content={userSing?.uid || "Não informado"}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <DescriptionItem
-                title="Permisão do usuário"
-                content={
-                  userSing?.customClaims.role.map((e) => e).join(" / ") ||
-                  "Não informado"
-                }
-              />
-            </Col>
-            <Col span={12}>
-              <DescriptionItem
-                title="Imagem usuário"
-                content={
-                  (
-                    <>
-                      <Avatar src={userSing?.photoURL} />
-                    </>
-                  ) || "Não informado"
-                }
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={24}>
-              <DescriptionItem
-                title="Tipo de autenticação"
-                content={
-                  userSing?.providerData.map((e) => e.providerId) ||
-                  "Não informado"
-                }
-              />
-            </Col>
-          </Row>
-          <Divider />
-          <p className="site-description-item-profile-p">Sobre</p>
-          <Row>
-            <Col span={12}>
-              <DescriptionItem
-                title="Criação do usuário"
-                content={userSing?.metadata.creationTime}
-              />
-            </Col>
-            <Col span={12}>
-              <DescriptionItem
-                title="Permisão do usuário"
-                content={
-                  userSing?.customClaims.role.map((e) => e).join(" / ") ||
-                  "Não informado"
-                }
-              />
-            </Col>
-          </Row>
-          {/* <Row>
-          <Col span={12}>
-            <DescriptionItem title="Login do usuário" content={userSing?.metadata.lastSignInTime} />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Supervisor" content={<a>Lin</a>} />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <DescriptionItem
-              title="Skills"
-              content="C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler theory, computer architecture, Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc."
-            />
-          </Col>
-        </Row>
-        <Divider />
-        <p className="site-description-item-profile-p">Contacts</p>
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Email" content="AntDesign@example.com" />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Phone Number" content="+86 181 0000 0000" />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <DescriptionItem
-              title="Github"
-              content={
-                <a href={userSing?.photoURL} target="_blank" rel="noreferrer">
-                  github.com/ant-design/ant-design/
-                </a>
-              }
-            />
-          </Col>
-        </Row> */}
         </Drawer>
       </>
     );
