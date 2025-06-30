@@ -16,13 +16,17 @@ import { Badge, Tooltip } from "antd";
 import { MenuItem } from "../types/type";
 import { IconApp } from "./ui/iconApp";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
-export const itemsDoMenu: MenuItem[] = [
-  { key: "Sair", icon: <IconApp iconKey="Sair"/>, label: "Sair", BadgeNumber: 10 },
-  { key: "Scan", icon: <IconApp iconKey="Scan" />, label: "Scan", BadgeNumber: 0 },
-  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro" },
-  { key: "Loja", icon: <IconApp iconKey="Loja" />, label: "Loja", BadgeNumber: 15 },
-  { key: "Servicos", icon: <IconApp iconKey="Servicos" />, label: "Serviços" },
+
+
+
+ const rawItemsDoMenu: MenuItem[] = [
+  { key: "Sair", icon: <IconApp iconKey="Sair"/>, label: "Sair", BadgeNumber: 10 ,role: null },
+  { key: "Scan", icon: <IconApp iconKey="Scan" />, label: "Scan", BadgeNumber: 0,role: "user"  },
+  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro",role: "user"  },
+  { key: "Loja", icon: <IconApp iconKey="Loja" />, label: "Loja", BadgeNumber: 15,role: "user"  },
+  { key: "Servicos", icon: <IconApp iconKey="Servicos" />, label: "Serviços" , BadgeNumber: 5 },
   { key: "Empacotar", icon: <IconApp iconKey="Empacotar" />, label: "Empacotar" },
   { key: "Pedidos", icon: <IconApp iconKey="Pedidos" />, label: "Pedidos" },
   { key: "Separação", icon: <IconApp iconKey="Separação" />, label: "Separação" },
@@ -31,8 +35,23 @@ export const itemsDoMenu: MenuItem[] = [
   { key: "Agenda", icon: <IconApp iconKey="Agenda" />, label: "Agenda" },
 ];
 
+export function handleMenu(role: string | null) {
+  return rawItemsDoMenu.filter(item => {
+    if (item.role !== undefined) {
+      if (item.role === role) return true;
+      if (item.role === null) return true;
+      return false;
+    }
+    return false;
+  });
+  
+}
+
+
 const FooterMobile = () => {
+    const {role} = useAuth();
   const navigate = useNavigate();
+  const itemsDoMenu = handleMenu(role);
   const handleSelect = (key: string) => {
     navigate(key);
   };

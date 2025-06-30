@@ -1,11 +1,12 @@
 import { Card, Col, Layout, Menu, Row, theme } from "antd";
-import OnePage from "./pages/OnePage";
+
 import HeaderChildren from "./components/Header.mobile";
-import FooterMobile, { itemsDoMenu } from "./components/footer.mobile";
+import FooterMobile, { handleMenu } from "./components/footer.mobile";
 import HomePageWeb from "./pages/HomePage.web";
 import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext";
 
 const { Content, Header, Footer, Sider } = Layout;
 const { Meta } = Card;
@@ -14,6 +15,7 @@ const AppWeb = () => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const navigate = useNavigate();
+      const {role} = useAuth();
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -73,7 +75,7 @@ const AppWeb = () => {
                 margin: 0,
                 padding: 8,
               }}
-              items={itemsDoMenu}
+              items={handleMenu(role)}
               onClick={(e) => handleSelect(e.key)}
             />
           </Sider>
@@ -98,7 +100,7 @@ const AppWeb = () => {
             }}
           >
             {/* Grid ou Lista de Cards */}
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexWrap: isMobile ? "nowrap" : "wrap",
@@ -123,9 +125,9 @@ const AppWeb = () => {
                   <Meta title={card.title} description={card.description} />
                 </Card>
               ))}
-            </div>
+            </div> */}
              {/* Linha horizontal com scroll no mobile e centralizada no desktop */}
-              <div
+              {/* <div
                 style={{
                   overflowX: "auto",
                   width: "100%",
@@ -159,11 +161,12 @@ const AppWeb = () => {
                     </Card>
                   </Col>
                 </Row>
-              </div>
+              </div> */}
+                      <Outlet />
           </Content>
         </Layout>
       </Layout>
-
+      
       {isMobile && <FooterMobile />}
     </Layout>
   );

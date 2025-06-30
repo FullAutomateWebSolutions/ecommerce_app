@@ -1,8 +1,9 @@
 export interface MenuItem {
   key: string;
-  icon: React.ReactNode;      // ícone JSX
+  icon: React.ReactNode;      
   label: string;
-  BadgeNumber?: number | 0;       // opcional
+  BadgeNumber?: number | 0;       
+  role?: string|null; 
 }
 export type IUser = {
   uid?: string;
@@ -13,9 +14,6 @@ export type IUser = {
   name?: string;
   role?: string;
 };
-
-
-
 
 export interface FirebaseUserResponse {
   uid: string;
