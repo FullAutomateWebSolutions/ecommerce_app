@@ -1,8 +1,8 @@
 import api from "@/axios/axios";
 import { FirebaseUserResponse, IUser } from "@/types/type";
-import { message } from "antd";
+import { message, notification } from "antd";
 import { AxiosResponse } from "axios";
-import { get } from "http";
+
 
 
 
@@ -37,11 +37,12 @@ export class CLogin {
       });
       this.user ={email: username, token: (await response).data};
       this.setToken((await response).data);
-     await this.loginUser();
+     await this.loginUser()
+      
       //@ts-ignore
       return response || null;
     } catch (error) {
-      console.log("Erro ao fazer login:", error);
+      console.log("Erro ao fazer login:");
       return Promise.reject(error);
     }
   }
@@ -58,21 +59,6 @@ export class CLogin {
   }
   
 
-  public async createdUser(username: string, password: string): Promise<AxiosResponse<any, any>> {
-    try {
-      const response = await api.post('/api/create-user', {
-        email: username,
-        senha: password
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      return response;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
 public async sendResetLink(email: string): Promise<AxiosResponse<any, any>> {
   try {
     const response = await api.post('/api/send-reset-link', { email }, {
@@ -80,13 +66,41 @@ public async sendResetLink(email: string): Promise<AxiosResponse<any, any>> {
         'Content-Type': 'application/json'
       }
     });
-    message.success("Link de redefinição de senha enviado com sucesso.");
     return response;
   } catch (error) {
     message.error("Erro ao enviar link de redefinição de senha.");
     return Promise.reject(error);
   }
 }
+
+ public async createdUser(username: string, password: string): Promise<AxiosResponse<any, any>> {
+    try {
+      const response = await api.post('/api/create-user', {
+        email: username,
+        password: password
+      });
+      this.sendValidateEmail(username);
+      return response;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+public async sendValidateEmail(email: string): Promise<AxiosResponse<any, any>> {
+  try {
+    const response = await api.post('/api/validate-email', { email }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+     notification.info({ message: "E-mail de validação enviado com sucesso." });
+    return response;
+  } catch (error) {
+    message.error("Erro ao enviar link de redefinição de senha.");
+    return Promise.reject(error);
+  }
+}
+
  public async loginUser() {
     const getAuthToken =  localStorage.getItem('authToken');
     if (getAuthToken) {

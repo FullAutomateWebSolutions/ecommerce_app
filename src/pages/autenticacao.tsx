@@ -1,33 +1,57 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Button, Typography, Card, Spin } from "antd";
+import { Form, Input, Button, Typography, Card, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { loginStore } from "@/store/useStore";
-import { UserOutlined, LockOutlined, LoginOutlined } from "@ant-design/icons";
+import { UserOutlined, LockOutlined, LoginOutlined, MailOutlined } from "@ant-design/icons";
 
 const AuthPage = () => {
   const navigate = useNavigate();
-  const { fech, loginUser, user, userSing , creatUser,redfinePassword} = loginStore();
+  const { fech, loginUser, redfinePassword, creatUser } = loginStore();
   const [modo, setModo] = useState<"login" | "cadastro" | "redefinir">("login");
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     fech();
-  }, [userSing, user]);
+  }, []);
 
-  const onFinish = async ({ email, senha }: { email: string; senha: string }) => {
-    try {
-      setLoading(true);
-      if (modo === "login") {
-        await loginUser(email, senha);
-      }
-      navigate("/");
-    } catch (error: any) {
-      alert("Usuário ou senha incorretos. (" + error.message + " )");
-    } finally {
-      setLoading(false);
+const onFinish = async ({ email, senha }: { email: string; senha?: string }) => {
+  try {
+    setLoading(true);
+
+    if (modo === "login") {
+      await loginUser(email, senha!);
+   
+      setTimeout(() => navigate("/"), 800); // tempo para exibir a notificação
+    } else if (modo === "redefinir") {
+      await redfinePassword(email);
+      notification.success({
+        message: "Redefinição enviada",
+        description: "Se o e-mail existir, um link de redefinição foi enviado.",
+        placement: "topRight",
+      });
+      setModo("login");
+    } else if (modo === "cadastro") {
+      await creatUser(email, senha!);
+      form.resetFields();
+      notification.success({
+        message: "Cadastro concluído",
+        description: "Sua conta foi criada.",
+        placement: "topRight",
+      });
+      setModo("login");
     }
-  };
 
+  } catch (error: any) {
+    notification.error({
+      message: "Erro",
+      description: error.message || "Algo deu errado. Tente novamente.",
+      placement: "topRight",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div
       style={{
@@ -58,19 +82,22 @@ const AuthPage = () => {
             alt="Logo"
             style={{ width: 85, marginBottom: 12 }}
           />
-        
-            <Typography.Title level={5} style={{ color: "#2a9d8f", margin: 0 }}>
-             Full Automate Web Solutions
+          <Typography.Title level={5} style={{ color: "#2a9d8f", margin: 0 }}>
+            Full Automate Web Solutions
           </Typography.Title>
           <Typography.Text type="secondary">
             Plataforma de acesso unificado
           </Typography.Text>
-            <Typography.Title level={2} style={{ color: "#2a9d8f", margin: 15 }}>
-            {modo === "login" ? "Acessar Sistema" : "Criar Conta"}
+          <Typography.Title level={2} style={{ color: "#2a9d8f", margin: 15 }}>
+            {{
+              login: "Acessar Sistema",
+              cadastro: "Criar Conta",
+              redefinir: "Redefinir Senha",
+            }[modo]}
           </Typography.Title>
         </div>
 
-        <Form layout="vertical" onFinish={onFinish}>
+        <Form layout="vertical" onFinish={onFinish} form={form}>
           <Form.Item
             label="E-mail"
             name="email"
@@ -78,13 +105,17 @@ const AuthPage = () => {
           >
             <Input prefix={<UserOutlined />} placeholder="seu@email.com" />
           </Form.Item>
-          <Form.Item
-            label="Senha"
-            name="senha"
-            rules={[{ required: true, min: 6 }]}
-          >
-            <Input.Password prefix={<LockOutlined />} placeholder="******" />
-          </Form.Item>
+
+          {modo !== "redefinir" && (
+            <Form.Item
+              label="Senha"
+              name="senha"
+              rules={[{ required: true, min: 6 }]}
+            >
+              <Input.Password prefix={<LockOutlined />} placeholder="******" />
+            </Form.Item>
+          )}
+
           <Form.Item>
             <Button
               htmlType="submit"
@@ -100,70 +131,76 @@ const AuthPage = () => {
                 boxShadow: "0 0 10px rgba(42, 157, 143, 0.2)",
                 transition: "all 0.3s ease-in-out",
               }}
-              onMouseEnter={(e) => {
-                (e.currentTarget.style.boxShadow =
-                  "0 0 15px rgba(42, 157, 143, 0.5)");
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget.style.boxShadow =
-                  "0 0 10px rgba(42, 157, 143, 0.2)");
-              }}
             >
-              {modo === "login" ? "Entrar" : "Cadastrar"}
+              {{
+                login: "Entrar",
+                cadastro: "Cadastrar",
+                redefinir: "Enviar redefinição",
+              }[modo]}
             </Button>
           </Form.Item>
         </Form>
 
         <Typography.Paragraph style={{ textAlign: "center" }}>
-            {modo === "login" ? "Não tem conta?" : "Já tem conta?"}{" "}
-            <br />
-            {modo === "login" && (
-            <a
-              onClick={async () => {
-              const email = prompt("Digite seu e-mail para redefinir a senha:");
-              if (email) {
-                try {
-                setLoading(true);
-                await loginStore.getState().redfinePassword(email);
-                alert("Se o e-mail existir, um link de redefinição foi enviado.");
-                } catch (error: any) {
-                alert("Erro ao enviar redefinição: " + error.message);
-                } finally {
-                setLoading(false);
-                }
-              }
-              }}
-              style={{
-              color: "#2a9d8f",
-              fontWeight: 500,
-              cursor: "pointer",
-              marginRight: 8,
-              display: "inline-block",
-              }}
-            >
-              Esqueceu a senha?
-            </a>
-            )}
-          <a
-            onClick={() => setModo(modo === "login" ? "cadastro" : "login")}
-            style={{
-              color: "#2a9d8f",
-              fontWeight: 500,
-              cursor: "pointer",
-              transition: "color 0.3s",
-            }}
-          >
-            {modo === "login" ? "Cadastre-se" : "Faça login"}
-          </a>
+          {modo === "login" && (
+            <>
+              <a
+                onClick={() => setModo("redefinir")}
+                style={{
+                  color: "#2a9d8f",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  marginRight: 8,
+                  display: "inline-block",
+                }}
+              >
+                Esqueceu a senha?
+              </a>
+              <br />
+              Ainda não tem conta?{" "}
+              <a
+                onClick={() => setModo("cadastro")}
+                style={{
+                  color: "#2a9d8f",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                }}
+              >
+                Cadastre-se
+              </a>
+            </>
+          )}
+
+          {modo === "cadastro" && (
+            <>
+              Já tem conta?{" "}
+              <a
+                onClick={() => setModo("login")}
+                style={{ color: "#2a9d8f", fontWeight: 500, cursor: "pointer" }}
+              >
+                Faça login
+              </a>
+            </>
+          )}
+
+          {modo === "redefinir" && (
+            <>
+              Lembrou a senha?{" "}
+              <a
+                onClick={() => setModo("login")}
+                style={{ color: "#2a9d8f", fontWeight: 500, cursor: "pointer" }}
+              >
+                Voltar para login
+              </a>
+            </>
+          )}
         </Typography.Paragraph>
-        
       </Card>
     </div>
   );
 };
 
 export default AuthPage;
-
 
 
 //  1. Via painel do Firebase (console web)

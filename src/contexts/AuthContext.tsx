@@ -24,11 +24,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [role, setRole] = useState<string[] | null>(null);
 
   useEffect(() => {
-    if (user?.token) {
+    if (user?.token && userSing?.emailVerified === true) {
       // já tem dados persistidos, só seta
       setUse(user);
       setRole([...userSing?.customClaims?.role || []]);
       setLoading(false);
+      
 
       // opcional: atualiza dados do firebase
       fech(); 
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   useEffect(() => {
-    if (userSing?.uid) {
+    if (userSing?.uid && userSing?.emailVerified === true) {
       setUse(userSing);
       setRole([...userSing?.customClaims?.role || []]);
       setLoading(false);

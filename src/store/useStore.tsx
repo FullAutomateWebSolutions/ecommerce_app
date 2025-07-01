@@ -30,9 +30,9 @@ export const loginStore = create<CLoginState>()(
       },
       creatUser: async (username, password) => {
         await clogin.createdUser(username, password);
-        const user = clogin.getUser();
-        const userSing = clogin.getUserSing();
-        set({ user, userSing });
+        // const user = clogin.getUser();
+        // const userSing = clogin.getUserSing();
+        // set({ user, userSing });
       },
       redfinePassword: async (email) => {
         await clogin.sendResetLink(email);
