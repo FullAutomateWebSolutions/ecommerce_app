@@ -64,7 +64,7 @@ const onFinish = async ({ email, senha }: { email: string; senha?: string }) => 
       }}
     >
       <Card
-        bordered={false}
+        // bordered={false}
         style={{
           width: 380,
           maxWidth: "100%",

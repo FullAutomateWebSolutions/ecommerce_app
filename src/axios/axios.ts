@@ -1,4 +1,5 @@
 
+import { message } from "antd";
 import axios from "axios";
 // Verificar se as variáveis de ambiente estão definidas
    const apiUrl = import.meta.env.VITE_URL_API || import.meta.env.VITE_API_URL;
@@ -60,6 +61,11 @@ api.interceptors.response.use(
   async error => {
     // CASO A API RETORNE 404 ELE VAI LIMPAR O TOKEN E RETONAR PARA A LOGIN
     if (error.response?.status === 401 && error.response?.data?.message === 'Token ausente') {//Token inválido
+       message.info("token inválido.")
+       }
+   if(error.message){
+      message.error("falha")
+   }
         // const originalRequest = error.config;
         // try {
         //   //Chamo ele mesmo e repasso o token
@@ -73,9 +79,9 @@ api.interceptors.response.use(
         //     window.location.href = '/login'; //  redirecionamento para a página de login
         // }
         // window.location.href = '/login'; 
-    }
+   
 
-    console.error("API Error:", error.response || error.message);
+    // console.error("API Error:", error.response || error.message);
     return Promise.reject(error);
   }
 );

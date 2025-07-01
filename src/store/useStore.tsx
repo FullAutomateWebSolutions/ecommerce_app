@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { CLogin } from "@/module/login.entity";
+import {  CLogin } from "@/module/login.entity";
 import { FirebaseUserResponse, IUser } from "@/types/type";
 
 const clogin = new CLogin();
@@ -11,13 +11,14 @@ interface CLoginState {
   fech: () => Promise<void>;
   loginUser: (username: string, password: string) => Promise<void>;
   logout: () => void;
-    creatUser: (username: string, password: string) => Promise<void>;
-    redfinePassword: (email: string) => Promise<void>;
-  
+  creatUser: (username: string, password: string) => Promise<void>;
+  redfinePassword: (email: string) => Promise<void>;
 }
 
+
 export const loginStore = create<CLoginState>()(
-  persist(/// persistência no localStorage
+  persist(
+    /// persistência no localStorage
     (set) => ({
       user: null,
       userSing: null,
@@ -45,8 +46,9 @@ export const loginStore = create<CLoginState>()(
       },
       logout: () => {
         set({ user: null, userSing: null });
-        localStorage.removeItem('login-storage'); 
-        localStorage.removeItem('authToken'); 
+        localStorage.removeItem("login-storage");
+        localStorage.removeItem("authToken");
+        clogin.logondUser();
       },
     }),
     {
@@ -55,7 +57,6 @@ export const loginStore = create<CLoginState>()(
         user: state.user,
         userSing: state.userSing,
       }),
-      
     }
   )
 );

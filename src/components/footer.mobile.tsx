@@ -111,7 +111,7 @@ const FooterMobile = () => {
     <div style={footer}>
       <div style={scrollContainer}>
         {itemsDoMenu.map(({ key, icon, label, BadgeNumber }) => (
-          // <a key={key} href={`#${key}`}>
+          <div key={key}>
           <Tooltip title={label}>
             <div style={iconContainer}>
               <Badge
@@ -124,7 +124,7 @@ const FooterMobile = () => {
               <p style={textStyle}>{label}</p>
             </div>
           </Tooltip>
-          // </a>
+          </div>
         ))}
       </div>
     </div>

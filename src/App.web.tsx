@@ -93,9 +93,9 @@ const AppWeb = () => {
             style={{
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
+              // alignItems: "center",
               overflowY: "auto",
-              height: "100%",
+              // height: "100%",
               background: "linear-gradient(to right, rgba(42, 157, 143, 0.08), rgba(11, 65, 92, 0.08))",
               borderRadius: borderRadiusLG,
               padding: "40px 20px",
