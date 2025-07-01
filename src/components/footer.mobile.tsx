@@ -22,50 +22,16 @@ import { c } from "vite/dist/node/moduleRunnerTransport.d-DJ_mE5sf";
 
 const rawItemsDoMenu: MenuItem[] = [
   // { key: "Sair", icon: <IconApp iconKey="Sair"/>, label: "Sair", BadgeNumber: 10 ,role: null },
-  {
-    key: "Scan",
-    icon: <IconApp iconKey="Scan" />,
-    label: "Scan",
-    BadgeNumber: 0,
-    role: "user",
-  },
-  {
-    key: "Cadastro",
-    icon: <IconApp iconKey="Cadastro" />,
-    label: "Cadastro",
-    role: "user",
-  },
-  {
-    key: "Loja",
-    icon: <IconApp iconKey="Loja" />,
-    label: "Loja",
-    BadgeNumber: 15,
-    role: "user",
-  },
-  {
-    key: "Servicos",
-    icon: <IconApp iconKey="Servicos" />,
-    label: "Serviços",
-    BadgeNumber: 5,
-  },
-  {
-    key: "Empacotar",
-    icon: <IconApp iconKey="Empacotar" />,
-    label: "Empacotar",
-  },
-  { key: "Pedidos", icon: <IconApp iconKey="Pedidos" />, label: "Pedidos" },
-  {
-    key: "Separação",
-    icon: <IconApp iconKey="Separação" />,
-    label: "Separação",
-  },
-  {
-    key: "Enviados",
-    icon: <IconApp iconKey="Enviados" />,
-    label: "Enviados",
-  },
-  { key: "perfil", icon: <IconApp iconKey="Perfil" />, label: "Perfil" },
-  { key: "Agenda", icon: <IconApp iconKey="Agenda" />, label: "Agenda" },
+  {    key: "Scan",        icon: <IconApp iconKey="Scan" />,      label: "Scan",    role: "user",  },
+  {    key: "Cadastro",    icon: <IconApp iconKey="Cadastro" />,  label: "Cadastro",role: "user",  },
+  {    key: "Loja",        icon: <IconApp iconKey="Loja" />,      label: "Loja",    role: "user",  },
+  {    key: "Servicos",    icon: <IconApp iconKey="Servicos" />,  label: "Serviços",   },
+  {    key: "Empacotar",   icon: <IconApp iconKey="Empacotar" />, label: "Empacotar",  },
+  {    key: "Pedidos",     icon: <IconApp iconKey="Pedidos" />,   label: "Pedidos",    },
+  {    key: "Separação",   icon: <IconApp iconKey="Separação" />, label: "Separação",  },
+  {    key: "Enviados",    icon: <IconApp iconKey="Enviados" />,  label: "Enviados",   },
+  {    key: "perfil",      icon: <IconApp iconKey="Perfil" />,    label: "Perfil",     },
+  {    key: "Agenda",      icon: <IconApp iconKey="Agenda" />,    label: "Agenda",     },
 ];
 
  const hasPermission = (requiredRole: string | null) => {
