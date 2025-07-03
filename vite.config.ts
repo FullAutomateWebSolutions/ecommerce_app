@@ -19,7 +19,7 @@ export default defineConfig({
         name: 'Full Automate Web Solution',
         short_name: 'Full Automate',
         description: 'Um app feito com React + Vite',
-        theme_color: '#3498db',
+        theme_color:  "#2A9D8F",
         background_color: '#ffffff',
         display: 'standalone',
         start_url: '/',

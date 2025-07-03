@@ -12,6 +12,7 @@ import ErrorPage403 from '../pages/Error403';
 import LeitorPage from '../pages/LeitorPage';
 import Logout from '@/pages/Logout';
 import UserAdmin from '@/pages/userAdmin';
+import Home from '@/pages/Home';
 
 /*Passagens do sistemas rotas existentes */
 const router = createBrowserRouter([
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
     path: "/",    element: (<AuthProvider ><PrivateRoute roleUser='public'><AppWeb/></PrivateRoute></AuthProvider>),
     //Rotas privadas
     children: [
-     {        path :"cadastro", element: (<AuthProvider ><PrivateRoute roleUser='user'><UserAdmin/></PrivateRoute></AuthProvider>),},    
+     {        path :"cadastro", element: (<AuthProvider ><PrivateRoute roleUser='user'><Home/></PrivateRoute></AuthProvider>),},    
      {        path: "sair", element: ( <AuthProvider ><PrivateRoute roleUser='public'><Logout/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "scan", element: ( <AuthProvider ><PrivateRoute roleUser='user'><LeitorPage/>     </PrivateRoute></AuthProvider>),}, 
      { path: '404', element:           <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage404/></PrivateRoute></AuthProvider>  },

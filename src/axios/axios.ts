@@ -64,7 +64,8 @@ api.interceptors.response.use(
        message.info("token inválido.")
        }
    if(error.message){
-      message.error("falha")
+      message.error("token invalido")
+      window.location.href = '/login';
    }
         // const originalRequest = error.config;
         // try {

@@ -14,7 +14,7 @@ import {
   Typography,
 } from "antd";
 import { LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo2.png";
 import { loginStore } from "@/store/useStore";
 import { IconApp } from "./ui/iconApp";
 import { useNavigate } from "react-router-dom";
@@ -161,12 +161,12 @@ const HeaderChildren = () => {
 
         <Col span={24}>
           <Typography.Text strong>Criado em</Typography.Text>
-          <div>{(userSing?.metadata?.creationTime)}</div>
+          <div>{userSing?.metadata?.creationTime}</div>
         </Col>
 
         <Col span={24}>
           <Typography.Text strong>Atualizado em</Typography.Text>
-          <div>{(userSing?.metadata?.lastRefreshTime)}</div>
+          <div>{userSing?.metadata?.lastRefreshTime}</div>
         </Col>
       </Row>
 
@@ -188,13 +188,39 @@ const HeaderChildren = () => {
 
   return (
     <>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      {/* <div style={{ display: "flex", alignItems: "center" }}>
         <img src={logo} alt="Logo" style={{ height: 40, marginRight: 12 }} />
         <h2 style={{ margin: 0 }}>Full Automate</h2>
-      </div>
+      </div> */}
 
-      {isMobile ? (
+
+           {isMobile ? (
         <>
+        
+      <Row
+        gutter={[16, 16]}
+        style={{
+         width: "100%",
+          margin: 0,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 1,
+        }}
+      >
+        <Col >
+          <img src={logo} alt="Logo GPA" width="50" />
+        </Col>
+        <Col>
+          <Typography.Title level={5} style={{ color: "#2a9d8f", margin: 0 }}>
+            Full Automate
+          </Typography.Title>
+          <Row>
+            <Typography.Text type="secondary">Web Solutions</Typography.Text>
+            <Divider style={{ margin: 0 }} />
+          </Row>
+        </Col>
+        <Col>
           <Button
             icon={<MenuOutlined />}
             onClick={showDrawer}
@@ -205,6 +231,8 @@ const HeaderChildren = () => {
             }}
           />
           {ModalUser()}
+        </Col>
+          </Row>
         </>
       ) : (
         <>
@@ -220,6 +248,10 @@ const HeaderChildren = () => {
           <ModalUser />
         </>
       )}
+        
+        
+
+   
     </>
   );
 };

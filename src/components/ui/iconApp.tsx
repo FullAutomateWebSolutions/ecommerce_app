@@ -18,7 +18,7 @@ import React, { JSX } from "react";
 //   token: { colorPrimary },
 // } = theme.useToken();
 const iconStyle: React.CSSProperties = {
-  fontSize: 20,
+  fontSize: 23,
   color: "#2A9D8F",
   marginBottom: 2,
 };
