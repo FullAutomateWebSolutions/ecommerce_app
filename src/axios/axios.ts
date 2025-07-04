@@ -2,7 +2,7 @@
 import { message } from "antd";
 import axios from "axios";
 // Verificar se as variáveis de ambiente estão definidas
-   const apiUrl = import.meta.env.VITE_URL_API || import.meta.env.VITE_API_URL;
+   const apiUrl = import.meta.env.VITE_URL_API;// || import.meta.env.VITE_API_URL;
 
 if (!apiUrl) {
     throw new Error("Url nao esta padrao");
@@ -63,10 +63,10 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && error.response?.data?.message === 'Token ausente') {//Token inválido
        message.info("token inválido.")
        }
-   if(error.message){
-      message.error("token invalido")
-      window.location.href = '/login';
-   }
+  //  if(error.message){
+  //     message.error("token invalido")
+  //     window.location.href = '/login';
+  //  }
         // const originalRequest = error.config;
         // try {
         //   //Chamo ele mesmo e repasso o token

@@ -6,8 +6,8 @@ import UserAdmin from "./userAdmin";
 
 const Home = () => {
   return (<>
-  
-  <UserAdmin/>
+  "Em desenvolvimento"
+  {/* <UserAdmin/> */}
   </>)
   // <BaseLayout 
   // childrenHeader={<h1 style={{ color: "#fff", margin: 0, fontSize: "20px" }}>1</h1>}

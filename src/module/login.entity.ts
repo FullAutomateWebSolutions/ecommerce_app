@@ -48,7 +48,6 @@ export class CLogin {
       //@ts-ignore
       return response || null;
     } catch (error) {
-      message.error("Usuário com problemas de autenticação!");
       return Promise.reject(error);
     }
   }

@@ -49,7 +49,7 @@ export const useGenericPost = <TData, TVariables>(
     ...options,
   });
 };
-export const useGenericDelete = <TData, TVariables>(
+export const useGenericDeleteHeader = <TData, TVariables>(
   endpoint: string,
   queryKey: string,
   options: UseGenericDeleteOptions<TData, TVariables> = {}
@@ -74,6 +74,8 @@ export const useGenericDelete = <TData, TVariables>(
     ...options,
   });
 };
+
+
 export const useGenericPut = <TData, TVariables>(
   endpoint: string,
   queryKey: string,

@@ -43,9 +43,10 @@ const onFinish = async ({ email, senha }: { email: string; senha?: string }) => 
     }
 
   } catch (error: any) {
+    console.log(error)
     notification.error({
       message: "Erro",
-      description: error.message || "Algo deu errado. Tente novamente.",
+      description:  "Algo deu errado. Tente novamente.",
       placement: "topRight",
     });
   } finally {

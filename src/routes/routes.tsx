@@ -1,7 +1,6 @@
 
 import { createBrowserRouter } from 'react-router-dom';
 import PrivateRoute from './privateRoutes';
-import App from '../App';
 import { AuthProvider } from '../contexts/AuthContext';
 import AppWeb from '../App.web';
 import ErrorPage from '../pages/Error404';

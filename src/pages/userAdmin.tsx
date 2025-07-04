@@ -98,6 +98,9 @@ const UserAdmin = () => {
   };
 
 
+  const handleDelete=(uid: string)=>{
+    deleteUser({uid})
+  }
 
   const renderActions = (user: FirebaseUserResponse) => {
     const items: MenuProps["items"] = [
@@ -137,9 +140,12 @@ const UserAdmin = () => {
     return (
       <Space wrap>
         <TableActions
+         onCheck={() => disableUser({uid: user.uid, disabled: user.disabled})}
           onSwitch={() => disableUser({uid: user.uid, disabled: user.disabled})}
-          onDelete={() => deleteUser(user.uid)}
+          onDelete={ () => handleDelete(user.uid)}
           onEdit={() => handleEdit(user)}
+         
+          checkedCheck={user.disabled}
           onSwitchDisbled={user.disabled}
           onJoinStatus={false}
         />

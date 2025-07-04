@@ -1,5 +1,5 @@
 import { UseMutationOptions } from "@tanstack/react-query";
-import { useGenericDelete, useGenericGet, useGenericPost } from "./useQuery";
+import {   useGenericGet, useGenericPost } from "./useQuery";
 import { FirebaseUserResponse } from "@/types/type";
 // import { IFinalizadora } from "../types/IFinalizadora";
 
@@ -10,9 +10,17 @@ type UseGenericPostOptions<TData, TVariables> = UseMutationOptions<
 >;
 
 type CreateVariables = Partial<FirebaseUserResponse[]>;
-type DeleteSettingDetail = { id: string };
+
 type IdisableUser = { uid: string, disabled: boolean };
 
+interface DeleteUserRequest {
+  uid: string;
+}
+
+interface DeleteUserResponse {
+  success: boolean;
+  message: string;
+}
 
 export const useDisableUsers = (  options?: UseGenericPostOptions< CreateVariables,IdisableUser>) => {
   return useGenericPost<CreateVariables,IdisableUser>(
@@ -22,10 +30,15 @@ export const useDisableUsers = (  options?: UseGenericPostOptions< CreateVariabl
   );
 };
 export const useDeleteUser = (
-  options?: UseGenericPostOptions<DeleteSettingDetail, string>
+  options?: UseGenericPostOptions<DeleteUserResponse, DeleteUserRequest>
 ) => {
-  return useGenericDelete("/api/delete-user", "users", options);
+  return useGenericPost<DeleteUserResponse, DeleteUserRequest>(
+    "/api/delete-user",
+    "users",
+    options
+  );
 };
+
 
 
 export const useGetUsers = () => {
