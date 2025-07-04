@@ -63,10 +63,10 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && error.response?.data?.message === 'Token ausente') {//Token inválido
        message.info("token inválido.")
        }
-  //  if(error.message){
-  //     message.error("token invalido")
-  //     window.location.href = '/login';
-  //  }
+   if(error.message){
+      message.error("token invalido")
+      window.location.href = '/login';
+   }
         // const originalRequest = error.config;
         // try {
         //   //Chamo ele mesmo e repasso o token
