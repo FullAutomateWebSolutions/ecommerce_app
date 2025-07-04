@@ -20,9 +20,10 @@ const router = createBrowserRouter([
     path: "/",    element: (<AuthProvider ><PrivateRoute roleUser='public'><AppWeb/></PrivateRoute></AuthProvider>),
     //Rotas privadas
     children: [
-     {        path :"cadastro", element: (<AuthProvider ><PrivateRoute roleUser='user'><Home/></PrivateRoute></AuthProvider>),},    
+     {        path :"cadastro", element: (<AuthProvider ><PrivateRoute roleUser='admin'><Home/></PrivateRoute></AuthProvider>),},    
      {        path: "sair", element: ( <AuthProvider ><PrivateRoute roleUser='public'><Logout/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "scan", element: ( <AuthProvider ><PrivateRoute roleUser='user'><LeitorPage/>     </PrivateRoute></AuthProvider>),}, 
+     {        path: "perfil", element: ( <AuthProvider ><PrivateRoute roleUser='admin'><UserAdmin/>     </PrivateRoute></AuthProvider>),}, 
      { path: '404', element:           <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage404/></PrivateRoute></AuthProvider>  },
      { path: '403', element:           <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage403/></PrivateRoute></AuthProvider>  },
      { path: '*', element:             <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage/></PrivateRoute></AuthProvider>  }
