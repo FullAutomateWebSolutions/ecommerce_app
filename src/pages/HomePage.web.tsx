@@ -5,7 +5,7 @@ import {
 } from "antd";
 import { useMediaQuery } from "react-responsive";
 
-import FooterMobile from "../components/footer.mobile"
+import FooterMobile from "../components/layout/footer.mobile"
 import LeitorPage from "./LeitorPage";
 import { Outlet } from "react-router-dom";
 const { Content } = Layout;

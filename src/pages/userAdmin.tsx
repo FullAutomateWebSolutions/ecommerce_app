@@ -31,7 +31,7 @@ import {
 import React, { useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { TableActions } from "@/components/ui/tableAction";
-import { BaseLayout } from "@/components/BaseLayout";
+import { BaseLayout } from "@/components/layout/BaseLayout";
  import { useQueryClient } from '@tanstack/react-query';
 const { Text } = Typography;
 const { confirm } = Modal;
@@ -160,9 +160,7 @@ const UserAdmin = () => {
     </Space>
   );
 
-  return (
-
- 
+  return ( 
       <BaseLayout 
       childrenHeader={
           <Input

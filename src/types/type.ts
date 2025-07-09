@@ -3,7 +3,7 @@ export interface MenuItem {
   icon: React.ReactNode;      
   label: string;
   BadgeNumber?: number | 0;       
-  role?: string|null; 
+   role?: string[]; // <- aqui mudou de string para string[]
 }
 export type IUser = {
   uid?: string;

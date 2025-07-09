@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Table, List, Carousel, Card, Typography, Space } from "antd";
-import { BaseLayout } from "@/components/BaseLayout";
-import BaseCardAjuste from "@/components/BaseCardAjuste";
+import { BaseLayout } from "@/components/layout/BaseLayout";
+import BaseCardAjuste from "@/components/layout/BaseCardAjuste";
 import UserAdmin from "./userAdmin";
 
 const Home = () => {

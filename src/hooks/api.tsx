@@ -39,8 +39,25 @@ export const useDeleteUser = (
   );
 };
 
+type SetRolesRequest = {
+  uid: string;
+  roles: string[];
+};
 
+type SetRolesResponse = {
+  success: boolean;
+  message: string;
+};
 
+export const useSetRoles = (
+  options?: UseGenericPostOptions<SetRolesResponse, SetRolesRequest>
+) => {
+  return useGenericPost<SetRolesResponse, SetRolesRequest>(
+    "/api/set-roles",
+    "users",
+    options
+  );
+};
 export const useGetUsers = () => {
   return useGenericGet("/api/users", "users", {
     retry: 2,
@@ -48,6 +65,66 @@ export const useGetUsers = () => {
   });
 };
 
+type UpdatePhotoRequest = {
+  uid: string;
+  photoURL: string;
+};
+
+type UpdatePhotoResponse = {
+  success: boolean;
+  message: string;
+  photoURL?: string;
+};
+
+export const useUpdatePhoto = (
+  options?: UseGenericPostOptions<UpdatePhotoResponse, UpdatePhotoRequest>
+) => {
+  return useGenericPost<UpdatePhotoResponse, UpdatePhotoRequest>(
+    "/api/update-photo",
+    "users",
+    options
+  );
+};
+
+
+type ValidateEmailRequest = {
+  email: string;
+};
+
+type ValidateEmailResponse = {
+  valid: boolean;
+  message?: string;
+};
+
+export const useValidateEmail = (
+  options?: UseGenericPostOptions<ValidateEmailResponse, ValidateEmailRequest>
+) => {
+  return useGenericPost<ValidateEmailResponse, ValidateEmailRequest>(
+    "/api/validate-email",
+    "users",
+    options
+  );
+};
+
+
+type SendResetLinkRequest = {
+  email: string;
+};
+
+type SendResetLinkResponse = {
+  success: boolean;
+  message: string;
+};
+
+export const useSendResetLink = (
+  options?: UseGenericPostOptions<SendResetLinkResponse, SendResetLinkRequest>
+) => {
+  return useGenericPost<SendResetLinkResponse, SendResetLinkRequest>(
+    "/api/send-reset-link",
+    "users",
+    options
+  );
+};
 // export const usePostSettings = (
 //   options?: UseGenericPostOptions<{}, CreateVariables>
 // ) => {

@@ -13,44 +13,43 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Badge, Tooltip } from "antd";
-import { MenuItem } from "../types/type";
-import { IconApp } from "./ui/iconApp";
+import { MenuItem } from "../../types/type";
+import { IconApp } from "../ui/iconApp";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { c } from "vite/dist/node/moduleRunnerTransport.d-DJ_mE5sf";
 
 
 const rawItemsDoMenu: MenuItem[] = [
-  // { key: "Sair", icon: <IconApp iconKey="Sair"/>, label: "Sair", BadgeNumber: 10 ,role: null },
-  {    key: "Scan",        icon: <IconApp iconKey="Scan" />,      label: "Scan",    role: "user",  },
-  {    key: "Cadastro",    icon: <IconApp iconKey="Cadastro" />,  label: "Cadastro",role: "admin",  },
-  {    key: "Loja",        icon: <IconApp iconKey="Loja" />,      label: "Loja",    role: "admin",  },
-  {    key: "Servicos",    icon: <IconApp iconKey="Servicos" />,  label: "Serviços",   },
-  {    key: "Empacotar",   icon: <IconApp iconKey="Empacotar" />, label: "Empacotar",  },
-  {    key: "Pedidos",     icon: <IconApp iconKey="Pedidos" />,   label: "Pedidos",    },
-  {    key: "Separação",   icon: <IconApp iconKey="Separação" />, label: "Separação",  },
-  {    key: "Enviados",    icon: <IconApp iconKey="Enviados" />,  label: "Enviados",   },
-  {    key: "perfil",      icon: <IconApp iconKey="Perfil" />,    label: "Perfil",   role: "admin"  },
-  {    key: "Agenda",      icon: <IconApp iconKey="Agenda" />,    label: "Agenda",     },
+  { key: "Scan", icon: <IconApp iconKey="Scan" />, label: "Scan",                      role: ["super","user"] },
+  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro",          role: ["super"] },
+  { key: "Loja", icon: <IconApp iconKey="Loja" />, label: "Loja",                      role: ["super","admin"] },
+  { key: "Servicos", icon: <IconApp iconKey="Servicos" />, label: "Serviços",          role: ["super","admin"] },
+  { key: "Empacotar", icon: <IconApp iconKey="Empacotar" />, label: "Empacotar",       role: ["super","separador", "admin"] },
+  { key: "Pedidos", icon: <IconApp iconKey="Pedidos" />, label: "Pedidos",             role: ["super","separador", "admin"] },
+  { key: "Separação", icon: <IconApp iconKey="Separação" />, label: "Separação",       role: ["super","separador"] },
+  { key: "Enviados", icon: <IconApp iconKey="Enviados" />, label: "Enviados",          role: ["super","admin"] },
+  { key: "perfil", icon: <IconApp iconKey="Perfil" />, label: "Perfil",                role: ["super"] },
+  { key: "Agenda", icon: <IconApp iconKey="Agenda" />, label: "Agenda",                role: ["super","admin"] },
 ];
 
- const hasPermission = (requiredRole: string | null) => {
-    const { role } = useAuth();
-    if (requiredRole === null) return false;
-    return role?.includes(requiredRole);
-  };
+
+const hasPermission = (requiredRoles?: string[]) => {
+  const { role } = useAuth(); // role: string[]
+  if (!requiredRoles || !Array.isArray(role)) return false;
+  return requiredRoles.some((r) => role.includes(r));
+};
+
 
 export function handleMenu() {
   return rawItemsDoMenu.filter((item) => {
-    if (item.role !== undefined) {
-      if (hasPermission(item.role)) return true;
-      if (item.role === null) return true;
-      // if (Array.isArray(item.role) && item.role.includes(role)) return true;
-      return false;
+    if (item.role) {
+      return hasPermission(item.role);
     }
     return false;
   });
 }
+
 
 const FooterMobile = () => {
   const navigate = useNavigate();

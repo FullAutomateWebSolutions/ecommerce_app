@@ -14,9 +14,9 @@ import {
   Typography,
 } from "antd";
 import { LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
-import logo from "../assets/logo2.png";
+import logo from "../../assets/logo2.png";
 import { loginStore } from "@/store/useStore";
-import { IconApp } from "./ui/iconApp";
+import { IconApp } from "../ui/iconApp";
 import { useNavigate } from "react-router-dom";
 
 const { useBreakpoint } = Grid;

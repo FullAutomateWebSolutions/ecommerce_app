@@ -21,9 +21,9 @@ import {
   Typography,
 } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
-import FooterMobile, { handleMenu } from "./components/footer.mobile";
+import FooterMobile, { handleMenu } from "./components/layout/footer.mobile";
 import { useMediaQuery } from "react-responsive";
-import HeaderChildren from "./components/Header.mobile";
+import HeaderChildren from "./components/layout/Header.mobile";
 import logo from "../src/assets/logo2.png";
 const { Header, Content, Sider, Footer } = Layout;
 
