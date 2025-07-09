@@ -8,6 +8,7 @@ import {
   Button,
   Space,
   message,
+  Result,
 } from "antd";
 import axios from "axios";
 import BarcodeScanner from "@/components/BarcodeScanner";
@@ -26,7 +27,7 @@ interface CardProduto {
   layer: number | null;
 }
 
-export default function ProdutoComScannerCam() {
+const LeitorPage: React.FC = () => {
   const [code, setCode] = useState<string | null>(null);
   const [data, setData] = useState<CardProduto[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<number[]>([]);
@@ -96,66 +97,101 @@ export default function ProdutoComScannerCam() {
   };
 
   return (
-    <>
-      {/* <Title level={3}>Leitor com Câmera + Consulta Cosmos API</Title> */}
+    <div
+    // style={{
+    //   maxWidth: "430px",
+    //   margin: "0 auto",
+    //   padding: "16px",
+    //   minHeight: "100vh",
+    //   backgroundColor: "#f0f2f5",
+    //   display: "flex",
+    //   flexDirection: "column",
+    //   justifyContent: "center",
+    // }}
+    >
+      <Card
+        bordered={false}
+        style={{
+          borderRadius: "16px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        }}
+      >
+        <Space direction="vertical" style={{ width: "100%" }} size="large">
+          <Title level={3} style={{ textAlign: "center" }}>
+            <BarcodeOutlined /> Leitor de Código
+          </Title>
 
-      <Space style={{ marginBottom: 16 }} wrap>
-        <Button onClick={handleReset}>Resetar</Button>
-        {selectedKeys.length > 0 && (
-          <Button type="primary" onClick={handleReprocess}>
-            Reprocessar Selecionados ({selectedKeys.length})
-          </Button>
-        )}
-      </Space>
-      <Space direction="vertical" style={{ width: "100%" }} size="large">
-        <Title level={3} style={{ textAlign: "center" }}>
-          <BarcodeOutlined /> Leitor de Código
-        </Title>
-        <BarcodeScanner
-          onScanSuccess={(result) => {
-            if (result) {
-              setCode(result);
-            }
-          }}
-        />
-      </Space>
-      <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
-        {data.map((item) => (
-          <Col key={item.key} xs={24} sm={12} md={8} lg={6}>
-            <Card
-              hoverable
-              loading={loading}
-              onClick={() => toggleSelecionado(item.key)}
-              style={{
-                border: selectedKeys.includes(item.key)
-                  ? "2px solid #1677ff"
-                  : undefined,
+          {!code && (
+            <BarcodeScanner
+              onScanSuccess={(result) => {
+                if (result) {
+                  setCode(result);
+                }
               }}
-              cover={
-                <Image
-                  alt={item.description}
-                  src={item.thumbnail}
-                  height={200}
-                  preview={false}
-                />
-              }
-            >
-              <Title level={5}>{item.description}</Title>
-              <Text strong>GTIN:</Text> {item.gtin} <br />
-              <Text strong>Marca:</Text> {item.marca} <br />
-              <Text strong>Embalagem:</Text> {item.embalagem} <br />
-              <Text strong>Quantidade:</Text> {item.quantidade} <br />
-              {item.ballast && (
-                <Text>
-                  Ballast: {item.ballast}
-                  <br />
+            />
+          )}
+
+          {code && (
+            <Result
+              status="success"
+              title="Código lido com sucesso!"
+              subTitle={
+                <Text strong style={{ fontSize: "18px" }}>
+                  <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
+                    {data.map((item) => (
+                      <Col key={item.key} xs={24} sm={12} md={8} lg={6}>
+                        <Card
+                          hoverable
+                          loading={loading}
+                          onClick={() => toggleSelecionado(item.key)}
+                          style={{
+                            border: selectedKeys.includes(item.key)
+                              ? "2px solid #1677ff"
+                              : undefined,
+                          }}
+                          cover={
+                            <Image
+                              alt={item.description}
+                              src={item.thumbnail}
+                              height={200}
+                              preview={false}
+                            />
+                          }
+                        >
+                          <Title level={5}>{item.description}</Title>
+                          <Text strong>GTIN:</Text> {item.gtin} <br />
+                          <Text strong>Marca:</Text> {item.marca} <br />
+                          <Text strong>Embalagem:</Text> {item.embalagem} <br />
+                          <Text strong>Quantidade:</Text> {item.quantidade}{" "}
+                          <br />
+                          {item.ballast && (
+                            <Text>
+                              Ballast: {item.ballast}
+                              <br />
+                            </Text>
+                          )}
+                          {item.layer && <Text>Layer: {item.layer}</Text>}
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
                 </Text>
-              )}
-              {item.layer && <Text>Layer: {item.layer}</Text>}
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </>
+              }
+              extra={[
+                <Button
+                  type="primary"
+                  icon={<ReloadOutlined />}
+                  onClick={() => setCode(null)}
+                >
+                  Ler Outro
+                </Button>,
+              ]}
+            />
+          )}
+        </Space>
+      </Card>
+    </div>
   );
-}
+};
+
+export default LeitorPage;
