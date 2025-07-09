@@ -1,132 +1,141 @@
-import React, { useState } from "react";
-import { Card, Typography, Button, Space, Result, Spin, Image, message } from "antd";
-import { BarcodeOutlined, ReloadOutlined } from "@ant-design/icons";
-import BarcodeScanner from "../components/BarcodeScanner";
+import { useEffect, useState } from "react";
+import { Card, Col, Row, Typography, Image, Button, Space, message } from "antd";
 import axios from "axios";
+import BarcodeScanner from "@/components/BarcodeScanner";
+
 
 const { Title, Text } = Typography;
 
-interface ProductItem {
-  title: string;
-  brand: string;
-  images: string[];
-  offers: {
-    merchant: string;
-    domain: string;
-    price: number;
-    list_price: number;
-    condition: string;
-    link: string;
-  }[];
+interface CardProduto {
+  key: number;
+  gtin: number;
+  description: string;
+  thumbnail: string;
+  marca: string;
+  embalagem: string;
+  quantidade: number;
+  ballast: number | null;
+  layer: number | null;
 }
 
-const LeitorPage: React.FC = () => {
+export default function ProdutoComScannerCam() {
   const [code, setCode] = useState<string | null>(null);
+  const [data, setData] = useState<CardProduto[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
-  const [product, setProduct] = useState<ProductItem | null>(null);
 
-  const handleScan = async (result: string) => {
-    if (!result || result === code) return;
-
-    setCode(result);
+  const fetchProduto = async (gtin: string) => {
     setLoading(true);
-    setProduct(null);
-
     try {
-      const response = await axios.get(`https://api.upcitemdb.com/prod/trial/lookup?upc=${result}`);
-      const item = response.data.items?.[0];
+      const res = await axios.get(
+        `https://api.cosmos.bluesoft.com.br/gtins/${gtin}.json`,
+        {
+          headers: {
+            "User-Agent": "Cosmos-API-Request",
+            "Content-Type": "application/json",
+            "X-Cosmos-Token": "lQ8BFJOXSkBiEIZaLgT_oQ",
+          },
+        }
+      );
 
-      if (item) {
-        setProduct(item);
-      } else {
-        message.warning("Produto não encontrado.");
-      }
-    } catch (error) {
-      message.error("Erro ao consultar API.");
+      const produto = res.data;
+      const itens: CardProduto[] = produto.gtins.map((g: any) => ({
+        key: g.gtin,
+        gtin: g.gtin,
+        description: produto.description,
+        thumbnail: produto.thumbnail,
+        marca: produto.brand.name,
+        embalagem: g.commercial_unit?.type_packaging,
+        quantidade: g.commercial_unit?.quantity_packaging,
+        ballast: g.commercial_unit?.ballast,
+        layer: g.commercial_unit?.layer,
+      }));
+
+      setData(itens);
+      setSelectedKeys([]);
+    } catch (err) {
+      message.error("GTIN não encontrado ou erro na API");
+      setData([]);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (code) {
+      fetchProduto(code);
+    }
+  }, [code]);
+
+  const toggleSelecionado = (key: number) => {
+    setSelectedKeys((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    );
+  };
+
+  const handleReprocess = () => {
+    message.success(`Reprocessando: ${selectedKeys.join(", ")}`);
+  };
+
   const handleReset = () => {
     setCode(null);
-    setProduct(null);
+    setData([]);
+    setSelectedKeys([]);
   };
 
   return (
-    <div
-      // style={{
-      //   maxWidth: "430px",
-      //   margin: "0 auto",
-      //   padding: "16px",
-      //   minHeight: "100vh",
-      //   backgroundColor: "#f0f2f5",
-      //   display: "flex",
-      //   flexDirection: "column",
-      //   justifyContent: "center",
-      // }}
-    >
-      <Card
-        bordered={false}
-        style={{
-          borderRadius: "16px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+    <>
+      {/* <Title level={3}>Leitor com Câmera + Consulta Cosmos API</Title> */}
+
+      <Space style={{ marginBottom: 16 }} wrap>
+        <Button onClick={handleReset}>Resetar</Button>
+        {selectedKeys.length > 0 && (
+          <Button type="primary" onClick={handleReprocess}>
+            Reprocessar Selecionados ({selectedKeys.length})
+          </Button>
+        )}
+      </Space>
+
+      <BarcodeScanner
+      onScanSuccess={ (result) => {
+          if (result) {
+            setCode(result); 
+          }
         }}
-      >
-        <Space direction="vertical" style={{ width: "100%" }} size="large">
-          <Title level={3} style={{ textAlign: "center" }}>
-            <BarcodeOutlined /> Leitor de Código
-          </Title>
+      />
 
-          {!code && <BarcodeScanner onScanSuccess={handleScan} />}
-
-          {loading && <Spin tip="Consultando produto..." />}
-
-          {code && !loading && product && (
+      <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
+        {data.map((item) => (
+          <Col key={item.key} xs={24} sm={12} md={8} lg={6}>
             <Card
-              type="inner"
-              title={product.title}
-              extra={<a href={product.offers?.[0]?.link} target="_blank">Ver Produto</a>}
+              hoverable
+              loading={loading}
+              onClick={() => toggleSelecionado(item.key)}
+              style={{
+                border: selectedKeys.includes(item.key)
+                  ? "2px solid #1677ff"
+                  : undefined,
+              }}
               cover={
-                product.images?.[0] && (
-                  <Image src={product.images[0]} alt={product.title} style={{ maxHeight: 200, objectFit: "contain" }} />
-                )
+                <Image
+                  alt={item.description}
+                  src={item.thumbnail}
+                  height={200}
+                  preview={false}
+                />
               }
             >
-              <Text strong>Marca:</Text> {product.brand || "Não informado"}<br />
-              <Text strong>Vendedor:</Text> {product.offers?.[0]?.merchant}<br />
-              <Text strong>Preço:</Text> ${product.offers?.[0]?.price} <br />
-              <Text strong>Preço original:</Text> ${product.offers?.[0]?.list_price} <br />
-              <Text strong>Condição:</Text> {product.offers?.[0]?.condition}
-              <div style={{ marginTop: 16 }}>
-                <Button
-                  type="primary"
-                  icon={<ReloadOutlined />}
-                  onClick={handleReset}
-                  block
-                >
-                  Ler Outro Código
-                </Button>
-              </div>
+              <Title level={5}>{item.description}</Title>
+              <Text strong>GTIN:</Text> {item.gtin} <br />
+              <Text strong>Marca:</Text> {item.marca} <br />
+              <Text strong>Embalagem:</Text> {item.embalagem} <br />
+              <Text strong>Quantidade:</Text> {item.quantidade} <br />
+              {item.ballast && <Text>Ballast: {item.ballast}<br /></Text>}
+              {item.layer && <Text>Layer: {item.layer}</Text>}
             </Card>
-          )}
-
-          {code && !loading && !product && (
-            <Result
-              status="warning"
-              title="Produto não encontrado"
-              subTitle={`Código lido: ${code}`}
-              extra={
-                <Button type="primary" icon={<ReloadOutlined />} onClick={handleReset}>
-                  Tentar Novamente
-                </Button>
-              }
-            />
-          )}
-        </Space>
-      </Card>
-    </div>
+          </Col>
+        ))}
+      </Row>
+    </>
   );
-};
-
-export default LeitorPage;
+}
