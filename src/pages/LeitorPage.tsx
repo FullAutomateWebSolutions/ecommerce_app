@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import { Card, Col, Row, Typography, Image, Button, Space, message } from "antd";
+import {
+  Card,
+  Col,
+  Row,
+  Typography,
+  Image,
+  Button,
+  Space,
+  message,
+} from "antd";
 import axios from "axios";
 import BarcodeScanner from "@/components/BarcodeScanner";
-
-
+import { BarcodeOutlined, ReloadOutlined } from "@ant-design/icons";
 const { Title, Text } = Typography;
 
 interface CardProduto {
@@ -39,19 +47,23 @@ export default function ProdutoComScannerCam() {
       );
 
       const produto = res.data;
-      const itens: CardProduto[] = produto.gtins.map((g: any) => ({
-        key: g.gtin,
-        gtin: g.gtin,
+      const cardItem: CardProduto = {
+        key: produto.gtin,
+        gtin: produto.gtin,
         description: produto.description,
         thumbnail: produto.thumbnail,
         marca: produto.brand.name,
-        embalagem: g.commercial_unit?.type_packaging,
-        quantidade: g.commercial_unit?.quantity_packaging,
-        ballast: g.commercial_unit?.ballast,
-        layer: g.commercial_unit?.layer,
-      }));
+        embalagem: produto.gtins[0]?.commercial_unit?.type_packaging ?? "-",
+        quantidade: produto.gtins[0]?.commercial_unit?.quantity_packaging ?? 1,
+        ballast: produto.gtins[0]?.commercial_unit?.ballast ?? null,
+        layer: produto.gtins[0]?.commercial_unit?.layer ?? null,
+      };
 
-      setData(itens);
+      setData((prev) => {
+        if (prev.find((item) => item.gtin === cardItem.gtin)) return prev;
+        return [...prev, cardItem];
+      });
+
       setSelectedKeys([]);
     } catch (err) {
       message.error("GTIN não encontrado ou erro na API");
@@ -62,7 +74,7 @@ export default function ProdutoComScannerCam() {
   };
 
   useEffect(() => {
-    if (code) {
+    if (code && !data.some((d) => d.gtin.toString() === code)) {
       fetchProduto(code);
     }
   }, [code]);
@@ -95,15 +107,18 @@ export default function ProdutoComScannerCam() {
           </Button>
         )}
       </Space>
-
-      <BarcodeScanner
-      onScanSuccess={ (result) => {
-          if (result) {
-            setCode(result); 
-          }
-        }}
-      />
-
+      <Space direction="vertical" style={{ width: "100%" }} size="large">
+        <Title level={3} style={{ textAlign: "center" }}>
+          <BarcodeOutlined /> Leitor de Código
+        </Title>
+        <BarcodeScanner
+          onScanSuccess={(result) => {
+            if (result) {
+              setCode(result);
+            }
+          }}
+        />
+      </Space>
       <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
         {data.map((item) => (
           <Col key={item.key} xs={24} sm={12} md={8} lg={6}>
@@ -130,7 +145,12 @@ export default function ProdutoComScannerCam() {
               <Text strong>Marca:</Text> {item.marca} <br />
               <Text strong>Embalagem:</Text> {item.embalagem} <br />
               <Text strong>Quantidade:</Text> {item.quantidade} <br />
-              {item.ballast && <Text>Ballast: {item.ballast}<br /></Text>}
+              {item.ballast && (
+                <Text>
+                  Ballast: {item.ballast}
+                  <br />
+                </Text>
+              )}
               {item.layer && <Text>Layer: {item.layer}</Text>}
             </Card>
           </Col>
