@@ -1,15 +1,56 @@
 import React, { useState } from "react";
-import { Card, Typography, Button, Space, Result } from "antd";
+import { Card, Typography, Button, Space, Result, Spin, Image, message } from "antd";
 import { BarcodeOutlined, ReloadOutlined } from "@ant-design/icons";
 import BarcodeScanner from "../components/BarcodeScanner";
+import axios from "axios";
 
 const { Title, Text } = Typography;
 
+interface ProductItem {
+  title: string;
+  brand: string;
+  images: string[];
+  offers: {
+    merchant: string;
+    domain: string;
+    price: number;
+    list_price: number;
+    condition: string;
+    link: string;
+  }[];
+}
+
 const LeitorPage: React.FC = () => {
   const [code, setCode] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [product, setProduct] = useState<ProductItem | null>(null);
 
-  const handleScan = (result: string) => {
+  const handleScan = async (result: string) => {
+    if (!result || result === code) return;
+
     setCode(result);
+    setLoading(true);
+    setProduct(null);
+
+    try {
+      const response = await axios.get(`https://api.upcitemdb.com/prod/trial/lookup?upc=${result}`);
+      const item = response.data.items?.[0];
+
+      if (item) {
+        setProduct(item);
+      } else {
+        message.warning("Produto não encontrado.");
+      }
+    } catch (error) {
+      message.error("Erro ao consultar API.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReset = () => {
+    setCode(null);
+    setProduct(null);
   };
 
   return (
@@ -39,24 +80,47 @@ const LeitorPage: React.FC = () => {
 
           {!code && <BarcodeScanner onScanSuccess={handleScan} />}
 
-          {code && (
-            <Result
-              status="success"
-              title="Código lido com sucesso!"
-              subTitle={
-                <Text strong style={{ fontSize: "18px" }}>
-                  {code}
-                </Text>
+          {loading && <Spin tip="Consultando produto..." />}
+
+          {code && !loading && product && (
+            <Card
+              type="inner"
+              title={product.title}
+              extra={<a href={product.offers?.[0]?.link} target="_blank">Ver Produto</a>}
+              cover={
+                product.images?.[0] && (
+                  <Image src={product.images[0]} alt={product.title} style={{ maxHeight: 200, objectFit: "contain" }} />
+                )
               }
-              extra={[
+            >
+              <Text strong>Marca:</Text> {product.brand || "Não informado"}<br />
+              <Text strong>Vendedor:</Text> {product.offers?.[0]?.merchant}<br />
+              <Text strong>Preço:</Text> ${product.offers?.[0]?.price} <br />
+              <Text strong>Preço original:</Text> ${product.offers?.[0]?.list_price} <br />
+              <Text strong>Condição:</Text> {product.offers?.[0]?.condition}
+              <div style={{ marginTop: 16 }}>
                 <Button
                   type="primary"
                   icon={<ReloadOutlined />}
-                  onClick={() => setCode(null)}
+                  onClick={handleReset}
+                  block
                 >
-                  Ler Outro
-                </Button>,
-              ]}
+                  Ler Outro Código
+                </Button>
+              </div>
+            </Card>
+          )}
+
+          {code && !loading && !product && (
+            <Result
+              status="warning"
+              title="Produto não encontrado"
+              subTitle={`Código lido: ${code}`}
+              extra={
+                <Button type="primary" icon={<ReloadOutlined />} onClick={handleReset}>
+                  Tentar Novamente
+                </Button>
+              }
             />
           )}
         </Space>
