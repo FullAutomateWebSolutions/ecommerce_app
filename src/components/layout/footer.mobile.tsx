@@ -22,7 +22,7 @@ import { c } from "vite/dist/node/moduleRunnerTransport.d-DJ_mE5sf";
 
 const rawItemsDoMenu: MenuItem[] = [
   { key: "Scan", icon: <IconApp iconKey="Scan" />, label: "Scan",                      role: ["super","user"] },
-  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro",          role: ["super"] },
+  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro",          role: ["super","user"] },
   { key: "Loja", icon: <IconApp iconKey="Loja" />, label: "Loja",                      role: ["super","admin"] },
   { key: "Servicos", icon: <IconApp iconKey="Servicos" />, label: "Serviços",          role: ["super","admin"] },
   { key: "Empacotar", icon: <IconApp iconKey="Empacotar" />, label: "Empacotar",       role: ["super","separador", "admin"] },

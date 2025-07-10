@@ -1,6 +1,6 @@
 import { UseMutationOptions } from "@tanstack/react-query";
 import {   useGenericGet, useGenericPost } from "./useQuery";
-import { FirebaseUserResponse } from "@/types/type";
+import { FirebaseUserResponse, Product } from "@/types/type";
 // import { IFinalizadora } from "../types/IFinalizadora";
 
 type UseGenericPostOptions<TData, TVariables> = UseMutationOptions<
@@ -125,7 +125,43 @@ export const useSendResetLink = (
     options
   );
 };
-// export const usePostSettings = (
+
+
+type SearchIntoProductRequest = {
+  ean: string;
+};
+
+type SearchIntoProductResponse = {
+  found: boolean;
+  product?: Product[]
+  message?: string;
+};
+
+export const useSearchIntoProduct = (
+  options?: UseGenericPostOptions<SearchIntoProductResponse, SearchIntoProductRequest>
+) => {
+  return useGenericPost<SearchIntoProductResponse, SearchIntoProductRequest>(
+    "/api/search_into_product",
+    "products",
+    options
+  );
+};
+
+type SearchAllProductResponse = {
+  products: Product[];
+  message?: string;
+};
+
+export const useSearchAllProduct = () => {
+  return useGenericGet(
+    "/search_all_product",
+    "products",
+    {
+      retry: 2,
+      refetchOnWindowFocus: true,
+    }
+  );
+};
 //   options?: UseGenericPostOptions<{}, CreateVariables>
 // ) => {
 //   return useGenericPost<IFinalizadora[], CreateVariables>("/api/disable-user","users",options);

@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import BarcodeScanner from "@/components/BarcodeScanner";
 import { BarcodeOutlined, ReloadOutlined } from "@ant-design/icons";
+import { useSearchIntoProduct } from "@/hooks/api";
 const { Title, Text } = Typography;
 
 interface CardProduto {
@@ -32,6 +33,20 @@ const LeitorPage: React.FC = () => {
   const [data, setData] = useState<CardProduto[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
+
+   const { mutate: intoProduct } = useSearchIntoProduct({ 
+      onSuccess: (data: any) => {
+        const successMessage = data.message;
+        message.success(successMessage);
+           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //@ts-expect-error
+        queryClient.invalidateQueries('products');
+      },
+      onError: (error: any) => {
+        const errorMessage = error.response?.data?.message || 'Falha';
+        message.error(errorMessage);
+      }
+    });
 
   const fetchProduto = async (gtin: string) => {
     setLoading(true);
@@ -76,7 +91,7 @@ const LeitorPage: React.FC = () => {
 
   useEffect(() => {
     if (code && !data.some((d) => d.gtin.toString() === code)) {
-      fetchProduto(code);
+      intoProduct({ean:code});
     }
   }, [code]);
 
