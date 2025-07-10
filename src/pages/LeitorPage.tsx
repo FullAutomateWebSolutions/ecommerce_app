@@ -38,6 +38,7 @@ const LeitorPage: React.FC = () => {
       onSuccess: (data: any) => {
         const successMessage = data.message;
         message.success(successMessage);
+        setData(data)
            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     //@ts-expect-error
         queryClient.invalidateQueries('products');
@@ -89,11 +90,11 @@ const LeitorPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (code && !data.some((d) => d.gtin.toString() === code)) {
-      intoProduct({ean:code});
-    }
-  }, [code]);
+  // useEffect(() => {
+  //   if (code && !data.some((d) => d.gtin.toString() === code)) {
+  //     intoProduct({ean:code});
+  //   }
+  // }, [code]);
 
   const toggleSelecionado = (key: number) => {
     setSelectedKeys((prev) =>
@@ -140,7 +141,7 @@ const LeitorPage: React.FC = () => {
             <BarcodeScanner
               onScanSuccess={(result) => {
                 if (result) {
-                  setCode(result);
+                   intoProduct({ean:result});
                 }
               }}
             />
@@ -149,49 +150,49 @@ const LeitorPage: React.FC = () => {
           {code && (
             <Result
               status="success"
-              title="Código lido com sucesso!"
-              subTitle={
-                <Text strong style={{ fontSize: "18px" }}>
-                  <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
-                    {data.map((item) => (
-                      <Col key={item.key} xs={24} sm={12} md={8} lg={6}>
-                        <Card
-                          hoverable
-                          loading={loading}
-                          onClick={() => toggleSelecionado(item.key)}
-                          style={{
-                            border: selectedKeys.includes(item.key)
-                              ? "2px solid #1677ff"
-                              : undefined,
-                          }}
-                          cover={
-                            <Image
-                              alt={item.description}
-                              src={item.thumbnail}
-                              height={200}
-                              preview={false}
-                            />
-                          }
-                        >
-                          <Title level={5}>{item.description}</Title>
-                          <Text strong>GTIN:</Text> {item.gtin} <br />
-                          <Text strong>Marca:</Text> {item.marca} <br />
-                          <Text strong>Embalagem:</Text> {item.embalagem} <br />
-                          <Text strong>Quantidade:</Text> {item.quantidade}{" "}
-                          <br />
-                          {item.ballast && (
-                            <Text>
-                              Ballast: {item.ballast}
-                              <br />
-                            </Text>
-                          )}
-                          {item.layer && <Text>Layer: {item.layer}</Text>}
-                        </Card>
-                      </Col>
-                    ))}
-                  </Row>
-                </Text>
-              }
+              title="Código cadastrado com sucesso"
+              // subTitle={
+              //   <Text strong style={{ fontSize: "18px" }}>
+              //     <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
+              //       {data.map((item) => (
+              //         <Col key={item.key} xs={24} sm={12} md={8} lg={6}>
+              //           <Card
+              //             hoverable
+              //             loading={loading}
+              //             onClick={() => toggleSelecionado(item.key)}
+              //             style={{
+              //               border: selectedKeys.includes(item.key)
+              //                 ? "2px solid #1677ff"
+              //                 : undefined,
+              //             }}
+              //             cover={
+              //               <Image
+              //                 alt={item.description}
+              //                 src={item.thumbnail}
+              //                 height={200}
+              //                 preview={false}
+              //               />
+              //             }
+              //           >
+              //             <Title level={5}>{item.description}</Title>
+              //             <Text strong>GTIN:</Text> {item.gtin} <br />
+              //             <Text strong>Marca:</Text> {item.marca} <br />
+              //             <Text strong>Embalagem:</Text> {item.embalagem} <br />
+              //             <Text strong>Quantidade:</Text> {item.quantidade}{" "}
+              //             <br />
+              //             {item.ballast && (
+              //               <Text>
+              //                 Ballast: {item.ballast}
+              //                 <br />
+              //               </Text>
+              //             )}
+              //             {item.layer && <Text>Layer: {item.layer}</Text>}
+              //           </Card>
+              //         </Col>
+              //       ))}
+              //     </Row>
+              //   </Text>
+              // }
               extra={[
                 <Button
                   type="primary"
