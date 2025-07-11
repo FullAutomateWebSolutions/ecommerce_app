@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { userSing, fech, user } = loginStore();
   const [use, setUse] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [role, setRole] = useState<string[] | null>(null);
+  const [role, setRole] = useState<string[] | null>([]);
 
   useEffect(() => {
     if (user?.token && userSing?.emailVerified === true) {
@@ -29,8 +29,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUse(user);
       setRole([...userSing?.customClaims?.role || []]);
       setLoading(false);
-      
-
       // opcional: atualiza dados do firebase
       fech(); 
     } else {

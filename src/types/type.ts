@@ -3,7 +3,7 @@ export interface MenuItem {
   icon: React.ReactNode;      
   label: string;
   BadgeNumber?: number | 0;       
-   role?: string[]; // <- aqui mudou de string para string[]
+  role?: string[]; 
 }
 export type IUser = {
   uid?: string;
@@ -66,7 +66,13 @@ export interface Product {
   barcode_image?: string;
   brand?: Brand;
   ncm?: Ncm;
+  gpc?:GCP;
   category?: Category;
+}
+
+export interface GCP {
+  code?: string;
+  description?: string;
 }
 
 export interface GtinInfo {

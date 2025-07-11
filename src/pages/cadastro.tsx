@@ -1,89 +1,36 @@
-import { useEffect, useState } from "react";
-import {
-  Card,
-  Col,
-  Row,
-  Typography,
-  Image,
-  Button,
-  Space,
-  message,
-  Result,
-  Avatar,
-} from "antd";
-import axios from "axios";
-import BarcodeScanner from "@/components/BarcodeScanner";
-import { BarcodeOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useGenericGet, useGenericPost } from "@/hooks/useQueryStore";
 import { Product } from "@/types/type";
+import { Button, Card, Col, Row, Typography, Tag, Avatar, Space } from "antd";
+
+import React, { useState } from "react";
 
 const { Title, Text, Paragraph } = Typography;
 
-const LeitorPage: React.FC = () => {
-  const [code, setCode] = useState<string | null>(null);
-  const [data, setData] = useState<Product[]>([]);
-  const [selectedKeys, setSelectedKeys] = useState<number[]>([]);
-  const [loading, setLoading] = useState(false);
+const Cadastro = () => {
   const [ellipsis, setEllipsis] = useState(true);
+  const { data, isLoading } = useGenericGet({
+    endpoint: "/search_all_product",
+    queryKey: "product",
+    options: { retry: 2, retryDelay: 2 },
+  });
+
   const { mutate, isPending } = useGenericPost({
     endpoint: "/search_into_product",
     queryKey: "product",
-    onSuccessCallback: (data: Product[]) => {
-      setData(data)
+    onSuccessCallback: (data: Product) => {
+      console.log("Produto encontrado:", data);
     },
   });
 
-  const handleConsultar = (ean: string) => {
+  const handleComprar = (ean: number) => {
     mutate({ ean });
   };
 
-  // useEffect(() => {
-  //   if (code && !data.some((d) => d.gtin.toString() === code)) {
-  //     intoProduct({ean:code});
-  //   }
-  // }, [code]);
+  const produtos: Product[] = data || [];
 
   return (
-    <div
-    // style={{
-    //   maxWidth: "430px",
-    //   margin: "0 auto",
-    //   padding: "16px",
-    //   minHeight: "100vh",
-    //   backgroundColor: "#f0f2f5",
-    //   display: "flex",
-    //   flexDirection: "column",
-    //   justifyContent: "center",
-    // }}
-    >
-      <Card
-        bordered={false}
-        style={{
-          borderRadius: "16px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-        }}
-      >
-        <Space direction="vertical" style={{ width: "100%" }} size="large">
-          <Title level={3} style={{ textAlign: "center" }}>
-            <BarcodeOutlined /> Leitor de Código
-          </Title>
-
-          {!code && (
-            <BarcodeScanner
-              onScanSuccess={(result) => {
-                if (result) {
-                  handleConsultar(result);
-                }
-              }}
-            />
-          )}
-
-          {code && (
-            <Result
-              status="success"
-              title="Código cadastrado com sucesso"
-              children={[
-                <Row
+    <>
+      <Row
         style={{
           overflowX: "auto",
           display: "flex",
@@ -92,7 +39,7 @@ const LeitorPage: React.FC = () => {
           flexWrap: "nowrap",
         }}
       >
-        {data.map((produto: Product, index) => {
+        {produtos.map((produto: Product, index) => {
           const preco =
             produto.price ??
             produto.avg_price ??
@@ -312,22 +259,8 @@ const LeitorPage: React.FC = () => {
           );
         })}
       </Row>
-              ]}
-              extra={[
-                <Button
-                  type="primary"
-                  icon={<ReloadOutlined />}
-                  onClick={() => setCode(null)}
-                >
-                  Ler Outro
-                </Button>,
-              ]}
-            />
-          )}
-        </Space>
-      </Card>
-    </div>
+    </>
   );
 };
 
-export default LeitorPage;
+export default Cadastro;
