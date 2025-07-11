@@ -86,19 +86,25 @@ const ContentStyle: React.CSSProperties = {
   padding: 24,
   background: "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(28, 151, 137, 0.26))"
 };
-
-const layoutPrincipal: React.CSSProperties = {
-  minHeight: "100vh",
+const getLayoutPrincipal = (isMobile: boolean): React.CSSProperties => ({
+  minHeight: isMobile ? "auto" : "100vh",
   borderBottom: "none",
   background:
     "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(42, 157, 143, 0.05))",
-};
+});
+
+
 
 const AppProt: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const navigate = useNavigate();
-
+const layoutPrincipal: React.CSSProperties = {
+  minHeight: isMobile ? "auto" : "100vh",
+  borderBottom: "none",
+  background:
+    "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(42, 157, 143, 0.05))",
+};
   const headerStyle: React.CSSProperties = {
   position: "sticky",
   top: 0,
@@ -116,7 +122,8 @@ const AppProt: React.FC = () => {
   };
 
   return (
-    <Layout style={layoutPrincipal}>
+   <Layout style={getLayoutPrincipal(isMobile)}>
+
       {/* <Badge.Ribbon text={"versao"} /> */}
       {!isMobile && (
         <Sider
