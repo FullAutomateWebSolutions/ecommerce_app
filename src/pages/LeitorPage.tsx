@@ -28,8 +28,8 @@ const LeitorPage: React.FC = () => {
   const { mutate, isPending } = useGenericPost({
     endpoint: "/search_into_product",
     queryKey: "product",
-    onSuccessCallback: (data: Product[]) => {
-      setData(data)
+    onSuccessCallback: (data: Product) => {
+      setData([data])
     },
   });
 
@@ -69,18 +69,17 @@ const LeitorPage: React.FC = () => {
           </Title>
 
           {!code && (
+            <><Button onClick={()=>(handleConsultar("737628064502"),setCode("nul"))}> click</Button>
             <BarcodeScanner
-              onScanSuccess={(result) => {
-                if (result) {
-                  handleConsultar(result);
-                }
-              }}
-            />
+              onScanSuccess={(code) => {
+                handleConsultar(code);
+              } } /></>
           )}
 
           {code && (
             <Result
               status="success"
+              key={"1"}
               title="Código cadastrado com sucesso"
               children={[
                 <Row
