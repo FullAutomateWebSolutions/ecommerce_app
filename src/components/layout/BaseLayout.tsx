@@ -16,10 +16,10 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
   childrenFooter,
 }) => {
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout>
       <Header
         style={{
-           background: "linear-gradient(to right, rgba(3, 10, 14, 0.73), rgba(28, 151, 137, 0.26))",
+          //  background: "linear-gradient(to right, rgba(3, 10, 14, 0.73), rgba(28, 151, 137, 0.26))",
           color: "#fff",
           padding: "0 16px",
           position: "sticky",
@@ -32,12 +32,13 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
       </Header>
 
       <Content style={{ margin: "10px" }}>
-        <Row gutter={[16, 16]}>
-          <Col span={24}>{childrenContent}</Col>
-        </Row>
+        {childrenContent}
+        {/* <Row gutter={[16, 16]}> */}
+          <Col span={24}></Col>
+        {/* </Row> */}
       </Content>
 
-      <Footer style={{ textAlign: "center" }}>{childrenFooter}</Footer>
+      {/* <Footer style={{ textAlign: "center" }}>{childrenFooter}</Footer> */}
     </Layout>
   );
 };

@@ -82,15 +82,14 @@ const logoStyle: React.CSSProperties = {
 };
 
 const ContentStyle: React.CSSProperties = {
-  minHeight: 360,
+  minHeight: 1000,
   padding: 24,
   background: "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(28, 151, 137, 0.26))"
 };
 const getLayoutPrincipal = (isMobile: boolean): React.CSSProperties => ({
   minHeight: isMobile ? "auto" : "100vh",
   borderBottom: "none",
-  background:
-    "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(42, 157, 143, 0.05))",
+  background: "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(42, 157, 143, 0.05))",
 });
 
 
@@ -178,9 +177,9 @@ const layoutPrincipal: React.CSSProperties = {
         <Content style={ContentStyle}>
           <Outlet />
         </Content>
-        <Footer style={{ textAlign: "center" }}>
+        {/* <Footer style={{ textAlign: "center" }}> */}
           {isMobile && <FooterMobile />}
-        </Footer>
+        {/* </Footer> */}
       </Layout>
     </Layout>
   );
