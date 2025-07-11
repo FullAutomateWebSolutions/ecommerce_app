@@ -30,18 +30,20 @@ const LeitorPage: React.FC = () => {
     queryKey: "product",
     onSuccessCallback: (data: Product) => {
       setData([data])
+      setCode(String(data.gtin))
     },
   });
 
   const handleConsultar = (ean: string) => {
     mutate({ ean });
+    
   };
 
-  // useEffect(() => {
-  //   if (code && !data.some((d) => d.gtin.toString() === code)) {
-  //     intoProduct({ean:code});
-  //   }
-  // }, [code]);
+  useEffect(() => {
+    if (code && !data.some((d) => String(d.gtin).toString() === code)) {
+      mutate(code);
+    }
+  }, [code]);
 
   return (
     <div
@@ -69,7 +71,7 @@ const LeitorPage: React.FC = () => {
           </Title>
 
           {!code && (
-            <><Button onClick={()=>(handleConsultar("737628064502"),setCode("nul"))}> click</Button>
+            <><Button onClick={()=>(handleConsultar("737628064502"))}> click</Button>
             <BarcodeScanner
               onScanSuccess={(code) => {
                 handleConsultar(code);

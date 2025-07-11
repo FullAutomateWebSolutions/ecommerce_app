@@ -24,7 +24,7 @@ const BarcodeScanner: React.FC<Props> = ({ onScanSuccess }) => {
       (error) => {
         // silencioso por padrão
         console.log(error)
-         scanner.clear(); // Para parar o scanner após leitura
+        
       }
     );
 
