@@ -14,6 +14,7 @@ import UserAdmin from '@/pages/userAdmin';
 import Home from '@/pages/Home';
 import User from '@/pages/User/user';
 import Cadastro from '@/pages/cadastro';
+import { ProductPage } from '@/pages/ProductPage';
 
 /*Passagens do sistemas rotas existentes */
 const router = createBrowserRouter([
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
      {        path: "scan", element: ( <AuthProvider ><PrivateRoute roleUser='user'><LeitorPage/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "perfil", element: ( <AuthProvider ><PrivateRoute roleUser='admin'><User/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "cadastro", element: ( <AuthProvider ><PrivateRoute roleUser='user'><Cadastro/>     </PrivateRoute></AuthProvider>),}, 
+     {        path: "loja", element: ( <AuthProvider ><PrivateRoute roleUser='user'><ProductPage/>     </PrivateRoute></AuthProvider>),}, 
      { path: '404', element:           <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage404/></PrivateRoute></AuthProvider>  },
      { path: '403', element:           <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage403/></PrivateRoute></AuthProvider>  },
      { path: '*', element:             <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage/></PrivateRoute></AuthProvider>  }

@@ -69,8 +69,6 @@ const siderStyle: React.CSSProperties = {
   boxShadow: "0 2px 8px #f0f1f2",
 };
 
-
-
 const logoStyle: React.CSSProperties = {
   height: "64px",
   margin: "16px",
@@ -86,6 +84,7 @@ const ContentStyle: React.CSSProperties = {
   padding: 24,
   background: "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(28, 151, 137, 0.26))"
 };
+
 const getLayoutPrincipal = (isMobile: boolean): React.CSSProperties => ({
   minHeight: isMobile ? "auto" : "100vh",
   borderBottom: "none",
