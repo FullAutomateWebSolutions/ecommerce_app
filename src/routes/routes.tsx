@@ -24,14 +24,14 @@ const router = createBrowserRouter([
     //Rotas privadas
     children: [
      {        path :"teste", element: (<AuthProvider ><PrivateRoute roleUser='public'>""</PrivateRoute></AuthProvider>),},    
-     {        path: "sair", element: ( <AuthProvider ><PrivateRoute roleUser='public'><Logout/>     </PrivateRoute></AuthProvider>),}, 
-     {        path: "scan", element: ( <AuthProvider ><PrivateRoute roleUser='user'><LeitorPage/>     </PrivateRoute></AuthProvider>),}, 
-     {        path: "perfil", element: ( <AuthProvider ><PrivateRoute roleUser='admin'><User/>     </PrivateRoute></AuthProvider>),}, 
-     {        path: "cadastro", element: ( <AuthProvider ><PrivateRoute roleUser='user'><Cadastro/>     </PrivateRoute></AuthProvider>),}, 
-     {        path: "loja", element: ( <AuthProvider ><PrivateRoute roleUser='user'><ProductPage/>     </PrivateRoute></AuthProvider>),}, 
-     { path: '404', element:           <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage404/></PrivateRoute></AuthProvider>  },
-     { path: '403', element:           <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage403/></PrivateRoute></AuthProvider>  },
-     { path: '*', element:             <AuthProvider ><PrivateRoute roleUser='public'><ErrorPage/></PrivateRoute></AuthProvider>  }
+     {        path: "sair", element: ( <AuthProvider ><PrivateRoute roleUser='public'>  <Logout/>     </PrivateRoute></AuthProvider>),}, 
+     {        path: "scan", element: ( <AuthProvider ><PrivateRoute roleUser='user'>    <LeitorPage/>     </PrivateRoute></AuthProvider>),}, 
+     {        path: "perfil", element:( <AuthProvider ><PrivateRoute roleUser='admin'> <User/>     </PrivateRoute></AuthProvider>),}, 
+     {        path: "cadastro", element:(<AuthProvider ><PrivateRoute roleUser='user'><Cadastro/>     </PrivateRoute></AuthProvider>),}, 
+     {        path: "loja", element: ( <AuthProvider ><PrivateRoute roleUser='user'>    <ProductPage/>     </PrivateRoute></AuthProvider>),}, 
+     { path: '404', element:           <AuthProvider ><PrivateRoute roleUser='public'>  <ErrorPage404/></PrivateRoute></AuthProvider>  },
+     { path: '403', element:           <AuthProvider ><PrivateRoute roleUser='public'>  <ErrorPage403/></PrivateRoute></AuthProvider>  },
+     { path: '*', element:             <AuthProvider ><PrivateRoute roleUser='public'>  <ErrorPage/></PrivateRoute></AuthProvider>  }
     ],
     }, //Rota publica
     { path: 'login', element: <AuthPage />  },
