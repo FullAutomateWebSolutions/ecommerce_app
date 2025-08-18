@@ -17,7 +17,7 @@ import { MenuItem } from "../../types/type";
 import { IconApp } from "../ui/iconApp";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { c } from "vite/dist/node/moduleRunnerTransport.d-DJ_mE5sf";
+
 
 
 const rawItemsDoMenu: MenuItem[] = [
@@ -33,6 +33,7 @@ const rawItemsDoMenu: MenuItem[] = [
   { key: "perfil", icon: <IconApp iconKey="Perfil" />, label: "Perfil",                role: ["super"] },
   { key: "Agenda", icon: <IconApp iconKey="Agenda" />, label: "Agenda",                role: ["super","admin"] },
   { key: "inventario", icon: <IconApp iconKey="Cadastro" />, label: "Inventário",      role: ["super","admin"] },
+  { key: "emotion", icon: <IconApp iconKey="Perfil" />, label: "Emotion",      role: ["alex"] },
 ];
 
 

@@ -14,6 +14,7 @@ import Cadastro from '@/pages/Product/ProductMarketCards';
 import Store from '@/pages/Store/store';
 import Inventory from '@/pages/Inventory/Inventory';
 import Product from '@/pages/Product/Product';
+import Emotion from '@/pages/Emotion/Emotion';
 
 /*Passagens do sistemas rotas existentes */
 const router = createBrowserRouter([
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
      {        path: "perfil", element:( <AuthProvider ><PrivateRoute roleUser='admin'>  <User/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "cadastro", element:(<AuthProvider ><PrivateRoute roleUser='user'>  <Product/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "loja", element: ( <AuthProvider ><PrivateRoute roleUser='user'>    <Store/>   </PrivateRoute></AuthProvider>),}, 
+     {        path: "emotion", element: ( <AuthProvider ><PrivateRoute roleUser='alex'>    <Emotion/>   </PrivateRoute></AuthProvider>),}, 
      { path: '404', element:           <AuthProvider ><PrivateRoute roleUser='public'>  <ErrorPage404/></PrivateRoute></AuthProvider>  },
      { path: '403', element:           <AuthProvider ><PrivateRoute roleUser='public'>  <ErrorPage403/></PrivateRoute></AuthProvider>  },
      { path: '*', element:             <AuthProvider ><PrivateRoute roleUser='public'>  <ErrorPage/></PrivateRoute></AuthProvider>  }

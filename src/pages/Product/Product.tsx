@@ -1,13 +1,10 @@
 import { BaseLayout } from "@/components/layout/BaseLayout";
 import React, { useState } from "react";
 import { ProductMarket } from "./ProductMarket";
-import { ProductFormDinamicoObrigatorioMercadoLivre } from "@/pages/MercadoLivre/form/ProductFormDinamicoObrigatorioMercadoLivre";
+
 import ModalBase from "@/components/ui/ModalBase";
 import { PageActions } from "@/components/layout/PageActions";
-import { ProductFormDinamicoMercadoLivre } from "@/pages/MercadoLivre/form/ProductFormDinamicoMercadoLivre";
-import { CategoriaMeliForm } from "@/pages/MercadoLivre/form/AtributosCategoriaMercadoLivreRequestForm";
-import { FormularioCategorias } from "@/pages/MercadoLivre/form/AtributosCategoriaMercadoLivreManualForm";
-import { ProductFormMercadoLivreSimples } from "@/pages/MercadoLivre/form/ProductFormSimplesMercadoLivre";
+
 
 const Product = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,15 +47,14 @@ const Product = () => {
       <ModalBase
         // title="Adiconar Loja"
         open={isModalOpen}
-        onCancel={handleCloseModal}
-
+        onCancel={handleCloseModal} children={undefined}
         // onOk={() => updateUser(formData)}
         // okText="Salvar"
         // confirmLoading={isSaving}
         // width={isMobile ? "90%" : 600}
         // centered
       >
-          <h2>Selecionar Categoria</h2>
+          {/* <h2>Selecionar Categoria</h2>
         <FormularioCategorias onCategoriaSelecionada={handleCategoriaSelecionada} />
         
         {selected && (
@@ -66,7 +62,7 @@ const Product = () => {
             // <ProductFormDinamicoMercadoLivre  categoryId={selected} />
         //  <ProductFormMercadoLivreSimples categoryId={selected} onSubmit={(e)=>handleSubmit(e)}/>
         
-        )}
+        )} */}
       
        
         
