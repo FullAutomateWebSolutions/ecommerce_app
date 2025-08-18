@@ -1,5 +1,16 @@
 import React, { useState } from "react";
-import { Form, Select, Input, Button, Radio, Space, InputNumber, Checkbox } from "antd";
+import {
+  Form,
+  Select,
+  Input,
+  Button,
+  Radio,
+  Space,
+  InputNumber,
+  Checkbox,
+  message,
+} from "antd";
+import { useEmotion } from "@/hooks/useEmotion";
 
 const { TextArea } = Input;
 
@@ -21,8 +32,29 @@ interface EmotionalFormValues {
 const EmotionalForm: React.FC = () => {
   const [form] = Form.useForm<EmotionalFormValues>();
 
+  const { create } = useEmotion();
+
   const onFinish = (values: EmotionalFormValues) => {
-    console.log("Registro enviado:", values);
+    const dataUtc = new Date();
+    const formatado = dataUtc.toLocaleString("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+    });
+
+    const dados = {
+      date_create: formatado,
+      ...values,
+    };
+
+    try {
+      create.mutate(dados, {
+        onSuccess: (e) => {
+          message.info(e);
+        },
+      });
+    } catch (error) {
+      message.error("  " + error);
+    }
+
     form.resetFields();
   };
 
@@ -33,7 +65,11 @@ const EmotionalForm: React.FC = () => {
       onFinish={onFinish}
       style={{ maxWidth: 500, margin: "0 auto" }}
     >
-      <Form.Item label="Emocional agora" name="emotional" rules={[{ required: true }]}>
+      <Form.Item
+        label="Emocional agora"
+        name="emotional"
+        rules={[{ required: true }]}
+      >
         <Radio.Group>
           <Space direction="vertical">
             <Radio value="motivated">😃 Motivado</Radio>
@@ -45,7 +81,11 @@ const EmotionalForm: React.FC = () => {
         </Radio.Group>
       </Form.Item>
 
-      <Form.Item label="Energia física" name="energy" rules={[{ required: true }]}>
+      <Form.Item
+        label="Energia física"
+        name="energy"
+        rules={[{ required: true }]}
+      >
         <Select placeholder="Escolha">
           <Select.Option value="high">Alta ⚡</Select.Option>
           <Select.Option value="medium">Média 🌤️</Select.Option>
@@ -62,15 +102,24 @@ const EmotionalForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item label="O que aconteceu / me afetou" name="events">
-        <TextArea rows={2} placeholder="Ex: chefe sumiu, música triste, conversa..." />
+        <TextArea
+          rows={2}
+          placeholder="Ex: chefe sumiu, música triste, conversa..."
+        />
       </Form.Item>
 
       <Form.Item label="Ação feita" name="action">
-        <TextArea rows={2} placeholder="Ex: revisei protótipo, limpei carro, caminhei..." />
+        <TextArea
+          rows={2}
+          placeholder="Ex: revisei protótipo, limpei carro, caminhei..."
+        />
       </Form.Item>
 
       <Form.Item label="Hipótese de âncora" name="anchor">
-        <TextArea rows={2} placeholder="Ex: ouvir música, mexer na moto, alongar..." />
+        <TextArea
+          rows={2}
+          placeholder="Ex: ouvir música, mexer na moto, alongar..."
+        />
       </Form.Item>
 
       <Form.Item name="tookMedicine" valuePropName="checked">

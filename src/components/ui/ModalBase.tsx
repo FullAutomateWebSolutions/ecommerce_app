@@ -40,14 +40,14 @@ const ModalBase = ({
       destroyOnClose
     >
      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "200px", 
-          textAlign: "center",
-        }}
+        // style={{
+        //   display: "flex",
+        //   flexDirection: "column",
+        //   alignItems: "center",
+        //   justifyContent: "center",
+        //   minHeight: "200px", 
+        //   textAlign: "center",
+        // }}
       >
         {children}
       </div>
