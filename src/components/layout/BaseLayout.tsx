@@ -1,44 +1,61 @@
-import { Layout, Row, Col } from "antd";
-import React from "react";
+import { Layout, Breadcrumb, Typography, Badge, Row, Col } from 'antd';
+import { useEffect, useState } from 'react';
 
-const { Header, Content, Footer } = Layout;
+const { Content } = Layout;
+const { Title, Paragraph } = Typography;
 
 interface BaseLayoutProps {
-  childrenHeader: React.ReactNode;
-  childrenContent: React.ReactNode;
-  childrenFooter?: React.ReactNode;
-  title?: string;
+  title: string;
+  subTitle?: string;
+  breadcrumb?: string[];
+  actions?: React.ReactNode;
+  children: React.ReactNode;
+  versao?: string;
+
 }
 
-export const BaseLayout: React.FC<BaseLayoutProps> = ({
-  childrenHeader,
-  childrenContent,
-  childrenFooter,
-}) => {
+
+export const BaseLayout = ({ title, breadcrumb = [], actions, children,versao, subTitle }: BaseLayoutProps) => {
+    const [mostrarBadge, setMostrarBadge] = useState(false);
+
+    useEffect(() => {
+      
+    if (versao !== undefined) {
+      const timer = setTimeout(() => {
+        setMostrarBadge(true);
+      }, 5000); 
+
+      return () => clearTimeout(timer); 
+    }
+  }, [versao]);
   return (
-    <Layout>
-      <Header
-        style={{
-          //  background: "linear-gradient(to right, rgba(3, 10, 14, 0.73), rgba(28, 151, 137, 0.26))",
-          color: "#fff",
-          padding: "0 16px",
-          position: "sticky",
-          top: 70,
-          zIndex: 10,
-          paddingBottom: 8,
-        }}
-      >
-        {childrenHeader}
-      </Header>
+    <>
+    {/* <Layout style={{ padding: 5,  background: "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(28, 151, 137, 0.26))",  overflow: 'hidden'}} > */}
+      {breadcrumb.length > 0 && (
+        <Breadcrumb style={{ marginBottom: 2,  fontSize:10}}>
+          
+          {breadcrumb.map((item, idx) => (
+            <Breadcrumb.Item key={idx}>{item}</Breadcrumb.Item>
+          ))}
+        </Breadcrumb>
+      )}
 
-      <Content style={{ margin: "10px" }}>
-        {childrenContent}
-        {/* <Row gutter={[16, 16]}> */}
-          <Col span={24}></Col>
-        {/* </Row> */}
-      </Content>
-
-      {/* <Footer style={{ textAlign: "center" }}>{childrenFooter}</Footer> */}
-    </Layout>
+      <Row style={{ display: 'flex',  justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
+        <Row style={{ flexDirection: "column", }}>
+          <Title level={4} style={{ margin: 1 }}>{title}</Title>
+           <Paragraph type='secondary' style={{ padding: 0, marginBottom: 4, fontSize:10 }}>{subTitle}</Paragraph>
+        </Row>
+        {actions}
+      </Row>
+      
+         {!mostrarBadge && (
+        // <Row style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 15 }}>
+          <Badge.Ribbon text={versao} />
+        // </Row>
+      )}
+      <Content style={{ overflow: 'hidden' }}> {children}</Content>
+      
+    {/* </Layout> */}
+    </>
   );
 };

@@ -27,7 +27,7 @@ import { CartModal } from "@/components/CartModal";
 const { Meta } = Card;
 const { Title, Text } = Typography;
 
-export function ProductPage() {
+export function ProductMarket() {
   const { list, create } = useProducts();
   const { selectedProduct, setSelectedProduct } = useProductStore();
   const {  items,addToCart } = useCartStore();

@@ -6,7 +6,7 @@ import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
-export function CartPage() {
+export function ProductCartPage() {
   const {
     items,
     increaseQty,

@@ -82,6 +82,7 @@ const logoStyle: React.CSSProperties = {
 const ContentStyle: React.CSSProperties = {
   minHeight: 1000,
   padding: 24,
+  // background: "#2a9d8f"
   background: "linear-gradient(to right, rgba(11, 65, 92, 0.12), rgba(28, 151, 137, 0.26))"
 };
 

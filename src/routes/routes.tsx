@@ -5,16 +5,15 @@ import { AuthProvider } from '../contexts/AuthContext';
 import AppWeb from '../App.web';
 import ErrorPage from '../pages/Error404';
 import AuthPage from '../pages/autenticacao';
-import HomePageWeb from '../pages/HomePage.web';
 import ErrorPage404 from '../pages/Error404';
 import ErrorPage403 from '../pages/Error403';
 import LeitorPage from '../pages/LeitorPage';
 import Logout from '@/pages/Logout';
-import UserAdmin from '@/pages/userAdmin';
-import Home from '@/pages/Home';
 import User from '@/pages/User/user';
-import Cadastro from '@/pages/cadastro';
-import { ProductPage } from '@/pages/ProductPage';
+import Cadastro from '@/pages/Product/ProductMarketCards';
+import Store from '@/pages/Store/store';
+import Inventory from '@/pages/Inventory/Inventory';
+import Product from '@/pages/Product/Product';
 
 /*Passagens do sistemas rotas existentes */
 const router = createBrowserRouter([
@@ -23,12 +22,12 @@ const router = createBrowserRouter([
     path: "/",    element: (<AuthProvider ><PrivateRoute roleUser='public'><AppWeb/></PrivateRoute></AuthProvider>),
     //Rotas privadas
     children: [
-     {        path :"teste", element: (<AuthProvider ><PrivateRoute roleUser='public'>""</PrivateRoute></AuthProvider>),},    
+     {        path :"inventario", element: (<AuthProvider ><PrivateRoute roleUser='public'>  <Inventory/></PrivateRoute></AuthProvider>),},    
      {        path: "sair", element: ( <AuthProvider ><PrivateRoute roleUser='public'>  <Logout/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "scan", element: ( <AuthProvider ><PrivateRoute roleUser='user'>    <LeitorPage/>     </PrivateRoute></AuthProvider>),}, 
-     {        path: "perfil", element:( <AuthProvider ><PrivateRoute roleUser='admin'> <User/>     </PrivateRoute></AuthProvider>),}, 
-     {        path: "cadastro", element:(<AuthProvider ><PrivateRoute roleUser='user'><Cadastro/>     </PrivateRoute></AuthProvider>),}, 
-     {        path: "loja", element: ( <AuthProvider ><PrivateRoute roleUser='user'>    <ProductPage/>     </PrivateRoute></AuthProvider>),}, 
+     {        path: "perfil", element:( <AuthProvider ><PrivateRoute roleUser='admin'>  <User/>     </PrivateRoute></AuthProvider>),}, 
+     {        path: "cadastro", element:(<AuthProvider ><PrivateRoute roleUser='user'>  <Product/>     </PrivateRoute></AuthProvider>),}, 
+     {        path: "loja", element: ( <AuthProvider ><PrivateRoute roleUser='user'>    <Store/>   </PrivateRoute></AuthProvider>),}, 
      { path: '404', element:           <AuthProvider ><PrivateRoute roleUser='public'>  <ErrorPage404/></PrivateRoute></AuthProvider>  },
      { path: '403', element:           <AuthProvider ><PrivateRoute roleUser='public'>  <ErrorPage403/></PrivateRoute></AuthProvider>  },
      { path: '*', element:             <AuthProvider ><PrivateRoute roleUser='public'>  <ErrorPage/></PrivateRoute></AuthProvider>  }

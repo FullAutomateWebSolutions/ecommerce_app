@@ -35,12 +35,17 @@ export const iconMap: Record<string, JSX.Element> = {
   Enviados: <TruckOutlined style={iconStyle} />,
   Perfil: <UserOutlined style={iconStyle} />,
   Agenda: <CalendarOutlined style={iconStyle} />,
+    MercadoLivre: <ShopOutlined style={{ fontSize: 23,
+  color: "#afc20aff",
+  // border: "solid 1px black",
+  marginBottom: 2,}} />,
 };
 
 interface IconAppProps {
   iconKey: keyof typeof iconMap;
+  color?: string;
 }
 
-export const IconApp = ({ iconKey }: IconAppProps) => {
+export const IconApp = ({ iconKey, color }: IconAppProps) => {
   return iconMap[iconKey] || null;
 };

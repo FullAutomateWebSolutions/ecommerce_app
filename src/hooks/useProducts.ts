@@ -18,6 +18,6 @@ export function useProducts() {
       queryClient.invalidateQueries({ queryKey: ["produtos"] });
     },
   });
-
+  
   return { list, create };
 }

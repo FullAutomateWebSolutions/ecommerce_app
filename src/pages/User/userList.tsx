@@ -11,9 +11,10 @@ import Table, { ColumnsType } from "antd/es/table";
 import { useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { UnlockOutlined , FileProtectOutlined } from '@ant-design/icons';
+import { converterParaFormatoBR } from "@/utils/dataSistem";
+import { Switch, Typography } from 'antd';
 
-
-
+const { Paragraph, Text } = Typography;
 const UserList = () => {
   const { data, isLoading } = useGetUsers();
   const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -45,8 +46,6 @@ queryClient.invalidateQueries();
       message.error(errorMessage);
     },
   });
-
- 
    const { mutate: ResetLink } = useSendResetLink({
     onSuccess: (data: any) => {
       const successMessage = data.message;
@@ -61,7 +60,6 @@ queryClient.invalidateQueries();
       message.error(errorMessage);
     },
   });
-
    const { mutate: ValidateEmail } = useValidateEmail({
     onSuccess: (data: any) => {
       const successMessage = data.message;
@@ -76,7 +74,6 @@ queryClient.invalidateQueries();
       message.error(errorMessage);
     },
   });
-
   const { mutate: deleteUser } = useDeleteUser({
     onSuccess: (data: any) => {
       const successMessage = data.message;
@@ -110,20 +107,10 @@ queryClient.invalidateQueries();
   const users: FirebaseUserResponse[] = useMemo(() => {
     const list = Array.isArray(data?.result?.users) ? data.result.users : [];
     //@ts-ignore
-    return list.filter((u) =>
-      u.email.toLowerCase().includes(search.toLowerCase())
+    return list.filter((u) =>u.email.toLowerCase().includes(search.toLowerCase())
     );
   }, [data, search]);
   const columns: ColumnsType<FirebaseUserResponse> = [
-    {
-      title: "UserID",
-      dataIndex: "uid",
-      key: "uid",
-      align: "justify",
-      width: 180,
-      sorter: (a, b) => a.uid.localeCompare(b.uid),
-      sortDirections: ["ascend", "descend"],
-    },
     {
       title: "E-mail",
       dataIndex: "email",
@@ -131,6 +118,13 @@ queryClient.invalidateQueries();
       align: "justify",
       width: 180,
       sorter: (a, b) => a.email.localeCompare(b.email),
+        render: (_: any, grupo: FirebaseUserResponse) => (
+        <div>
+             <Paragraph ellipsis={true}>  
+                <span>{[grupo.email]}</span>
+               </Paragraph>
+        </div>
+      ),
       sortDirections: ["ascend", "descend"],
     },
 
@@ -141,7 +135,52 @@ queryClient.invalidateQueries();
       align: "center",
       width: 180,
       sortDirections: ["ascend", "descend"],
+      render: (_: any, grupo: FirebaseUserResponse) => (
+        <div>
+          <span>{converterParaFormatoBR([grupo.tokensValidAfterTime])}</span>
+        </div>
+      ),
     },
+      {
+      title: "creationTime",
+      dataIndex: "tokensValidAfterTime",
+      key: "creationTime",
+      align: "center",
+      width: 180,
+      sortDirections: ["ascend", "descend"],
+      render: (_: any, grupo: FirebaseUserResponse) => (
+        <div>
+          <span>{converterParaFormatoBR([grupo.metadata.creationTime])}</span>
+        </div>
+      ),
+    },
+      {
+      title: "lastRefreshTime",
+      dataIndex: "tokensValidAfterTime",
+      key: "lastRefreshTime",
+      align: "center",
+      width: 180,
+      sortDirections: ["ascend", "descend"],
+      render: (_: any, grupo: FirebaseUserResponse) => (
+        <div>
+          <span>{converterParaFormatoBR([grupo.metadata.lastRefreshTime])}</span>
+        </div>
+      ),
+    },
+      {
+      title: "lastSignInTime",
+      dataIndex: "tokensValidAfterTime",
+      key: "lastSignInTime",
+      align: "center",
+      width: 180,
+      sortDirections: ["ascend", "descend"],
+      render: (_: any, grupo: FirebaseUserResponse) => (
+        <div>
+          <span>{converterParaFormatoBR([grupo.metadata.lastSignInTime])}</span>
+        </div>
+      ),
+    },
+
     {
       title: "Role",
       key: "Role",
@@ -243,7 +282,6 @@ queryClient.invalidateQueries();
               <>
                 <StandardTable
                   bordered
-                  
                   expandable={{ expandedRowRender: renderDetalhesFalha }}
                   style={{ paddingTop: 4, paddingBottom: 4 }}
                   columns={columns}

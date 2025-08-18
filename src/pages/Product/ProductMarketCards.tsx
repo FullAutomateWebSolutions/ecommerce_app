@@ -1,3 +1,4 @@
+import { Loja, LojaForm } from "@/components/form/LojaForm";
 import { useGenericGet, useGenericPost } from "@/hooks/useQueryStore";
 import { Product } from "@/types/type";
 import { Button, Card, Col, Row, Typography, Tag, Avatar, Space } from "antd";
@@ -6,7 +7,7 @@ import React, { useState } from "react";
 
 const { Title, Text, Paragraph } = Typography;
 
-const Cadastro = () => {
+const ProductMarketCards = () => {
   const [ellipsis, setEllipsis] = useState(true);
   const { data, isLoading } = useGenericGet({
     endpoint: "/search_all_product",
@@ -50,7 +51,8 @@ const Cadastro = () => {
           return (
             <Col key={index} xs={24} sm={12} md={8} lg={6}>
               <Card
-               extra={index+1}
+               extra={""}
+ 
                 // hoverable
                 bodyStyle={{
                   padding: 16,
@@ -245,15 +247,16 @@ const Cadastro = () => {
                   </Paragraph>
                 </div>
 
-                {/* <Button
+                <Button
                   type="primary"
                   block
                   style={{ marginTop: 12 }}
-                  onClick={() => handleComprar(produto.gtin)}
+                  onClick={() => ""}
                   loading={isPending}
                 >
                   Comprar
-                </Button> */}
+                </Button>
+                
               </Card>
             </Col>
           );
@@ -263,4 +266,4 @@ const Cadastro = () => {
   );
 };
 
-export default Cadastro;
+export default ProductMarketCards;
