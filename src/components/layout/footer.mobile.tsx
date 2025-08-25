@@ -22,9 +22,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const rawItemsDoMenu: MenuItem[] = [
   { key: "Scan", icon: <IconApp iconKey="Scan" />, label: "Scan",                      role: ["super"] },
-  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro",          role: ["super"] },
   { key: "Loja", icon: <IconApp iconKey="Loja" />, label: "Loja",                      role: ["super","admin"] },
-  { key: "MercadoLivre", icon: <IconApp iconKey="MercadoLivre" />, label: "Mercado Livre",     role: ["super","admin"] },
   { key: "Servicos", icon: <IconApp iconKey="Servicos" />, label: "Serviços",          role: ["super","admin"] },
   { key: "Empacotar", icon: <IconApp iconKey="Empacotar" />, label: "Empacotar",       role: ["super","separador", "admin"] },
   { key: "Pedidos", icon: <IconApp iconKey="Pedidos" />, label: "Pedidos",             role: ["super","separador", "admin"] },

@@ -10,10 +10,10 @@ import ErrorPage403 from '../pages/Error403';
 import LeitorPage from '../pages/LeitorPage';
 import Logout from '@/pages/Logout';
 import User from '@/pages/User/user';
-import Cadastro from '@/pages/Product/ProductMarketCards';
+
 import Store from '@/pages/Store/store';
 import Inventory from '@/pages/Inventory/Inventory';
-import Product from '@/pages/Product/Product';
+
 import Emotion from '@/pages/Emotion/Emotion';
 import SignalMind from '@/pages/SignalMind/SignalMind';
 
@@ -28,7 +28,6 @@ const router = createBrowserRouter([
      {        path: "sair", element: ( <AuthProvider ><PrivateRoute roleUser='public'>  <Logout/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "scan", element: ( <AuthProvider ><PrivateRoute roleUser='user'>    <LeitorPage/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "perfil", element:( <AuthProvider ><PrivateRoute roleUser='admin'>  <User/>     </PrivateRoute></AuthProvider>),}, 
-     {        path: "cadastro", element:(<AuthProvider ><PrivateRoute roleUser='user'>  <Product/>     </PrivateRoute></AuthProvider>),}, 
      {        path: "loja", element: ( <AuthProvider ><PrivateRoute roleUser='user'>    <Store/>   </PrivateRoute></AuthProvider>),}, 
      {        path: "emotion", element: ( <AuthProvider ><PrivateRoute roleUser='alex'>    <Emotion/>   </PrivateRoute></AuthProvider>),}, 
      {        path: "SignalMind", element: ( <AuthProvider ><PrivateRoute roleUser='user'>    <SignalMind/>   </PrivateRoute></AuthProvider>),}, 
