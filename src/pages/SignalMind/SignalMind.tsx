@@ -1,32 +1,34 @@
+
 import EmotionalForm from '@/components/form/EmotionalForm'
 import { BaseLayout } from '@/components/layout/BaseLayout'
 import { PageActions } from '@/components/layout/PageActions'
 import ModalBase from '@/components/ui/ModalBase'
 import { useState } from 'react'
-import EmotionList from './EmotionList'
+
 import ChecklistComportamento from '@/components/form/ChecklistComportamento'
+import SignalMindList from './SignalMindList'
 
 
-const Emotion = () => {
+const SignalMind = () => {
   const [modal, setModal] = useState(false);
   const [modalA, setModalA] = useState(false);
   return (
     <div>
       <BaseLayout 
-        title={'Emotion'} 
+        title={'Verificação da Mente Sinalizadora'} 
         actions={<>
         <PageActions 
-            onCreate={()=>setModal(true)}
-            createText='Novo registro'
-            onSave={()=>setModalA(true)}
-            saveText='Comportamental'
+            onCreate={()=>setModalA(true)}
+            
+            createText='CheckList'
             />
         </>}
-        subTitle='Gestao das minhas emoções'
-        breadcrumb={["Emotion","Adminstração de emoções"]}
-        children={<EmotionList/>}
+        subTitle='Mente através dos sinais, lingua invisivel de sinais humanos'
+        breadcrumb={["Signal Mind","CheckList Signal Mind"]}
+        children={<>
+        <SignalMindList/>
+        </>}
          />
-         <ModalBase children={<EmotionalForm />} onCancel={()=>setModal(!modal)} open={modal}/>
          <ModalBase children={<ChecklistComportamento />} onCancel={()=>setModalA(!modalA)} open={modalA}/>
       
       
@@ -34,4 +36,4 @@ const Emotion = () => {
   )
 }
 
-export default Emotion
+export default SignalMind

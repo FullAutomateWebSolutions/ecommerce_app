@@ -21,8 +21,8 @@ import { useAuth } from "@/contexts/AuthContext";
 
 
 const rawItemsDoMenu: MenuItem[] = [
-  { key: "Scan", icon: <IconApp iconKey="Scan" />, label: "Scan",                      role: ["super","user"] },
-  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro",          role: ["super","user"] },
+  { key: "Scan", icon: <IconApp iconKey="Scan" />, label: "Scan",                      role: ["super"] },
+  { key: "Cadastro", icon: <IconApp iconKey="Cadastro" />, label: "Cadastro",          role: ["super"] },
   { key: "Loja", icon: <IconApp iconKey="Loja" />, label: "Loja",                      role: ["super","admin"] },
   { key: "MercadoLivre", icon: <IconApp iconKey="MercadoLivre" />, label: "Mercado Livre",     role: ["super","admin"] },
   { key: "Servicos", icon: <IconApp iconKey="Servicos" />, label: "Serviços",          role: ["super","admin"] },
@@ -33,7 +33,9 @@ const rawItemsDoMenu: MenuItem[] = [
   { key: "perfil", icon: <IconApp iconKey="Perfil" />, label: "Perfil",                role: ["super"] },
   { key: "Agenda", icon: <IconApp iconKey="Agenda" />, label: "Agenda",                role: ["super","admin"] },
   { key: "inventario", icon: <IconApp iconKey="Cadastro" />, label: "Inventário",      role: ["super","admin"] },
-  { key: "emotion", icon: <IconApp iconKey="Perfil" />, label: "Emotion",      role: ["alex"] },
+  { key: "emotion", icon: <IconApp iconKey="Perfil" />, label: "Emotion",              role: ["alex"] },
+  { key: "SignalMind", icon: <IconApp iconKey="Perfil" />, label: "Signal Mind",       role: ["user"] },
+  
 ];
 
 
