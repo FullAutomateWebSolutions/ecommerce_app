@@ -4,6 +4,15 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 export default defineConfig({
   server: { host: 'localhost', port: 3002 },
+   build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'], // exemplo separando libs
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       // eslint-disable-next-line no-undef
@@ -15,6 +24,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
+      workbox: {
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024 // 5 MB
+      },
       manifest: {
         name: 'Full Automate Web Solution',
         short_name: 'Full Automate',
